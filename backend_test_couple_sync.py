@@ -35,7 +35,7 @@ class CouplesSyncTester:
                 "name": name,
                 "email": email
             })
-            if response.status_code == 201:
+            if response.status_code in [200, 201]:
                 return response.json()
             else:
                 print(f"Failed to create user {name}: {response.status_code} - {response.text}")
