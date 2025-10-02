@@ -78,30 +78,35 @@ const AuthPage = ({ onLogin }) => {
         <Card className="glass border-emerald-200 animate-slide-in">
           <CardHeader className="text-center">
             <CardTitle className="arabic-title text-xl text-emerald-800">
-              إنشاء حساب جديد
+              {isLogin ? "تسجيل الدخول" : "إنشاء حساب جديد"}
             </CardTitle>
             <CardDescription className="arabic-text text-emerald-600">
-              ابدأ رحلتك في تحسين التواصل مع شريك حياتك
+              {isLogin 
+                ? "أدخل بريدك الإلكتروني للدخول إلى حسابك" 
+                : "ابدأ رحلتك في تحسين التواصل مع شريك حياتك"
+              }
             </CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="name" className="arabic-text text-emerald-700 font-medium">
-                  الاسم الكامل
-                </Label>
-                <Input
-                  id="name"
-                  name="name"
-                  type="text"
-                  placeholder="أدخل اسمك الكامل"
-                  value={formData.name}
-                  onChange={handleChange}
-                  required
-                  className="form-input arabic-text"
-                  data-testid="name-input"
-                />
-              </div>
+              {!isLogin && (
+                <div className="space-y-2">
+                  <Label htmlFor="name" className="arabic-text text-emerald-700 font-medium">
+                    الاسم الكامل
+                  </Label>
+                  <Input
+                    id="name"
+                    name="name"
+                    type="text"
+                    placeholder="أدخل اسمك الكامل"
+                    value={formData.name}
+                    onChange={handleChange}
+                    required
+                    className="form-input arabic-text"
+                    data-testid="name-input"
+                  />
+                </div>
+              )}
 
               <div className="space-y-2">
                 <Label htmlFor="email" className="arabic-text text-emerald-700 font-medium">
@@ -124,17 +129,33 @@ const AuthPage = ({ onLogin }) => {
                 type="submit"
                 disabled={loading}
                 className="w-full btn-primary arabic-text text-lg py-3"
-                data-testid="register-button"
+                data-testid={isLogin ? "login-button" : "register-button"}
               >
                 {loading ? (
                   <div className="flex items-center justify-center gap-2">
                     <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                    جاري الإنشاء...
+                    {isLogin ? "جاري تسجيل الدخول..." : "جاري الإنشاء..."}
                   </div>
                 ) : (
-                  "إنشاء الحساب"
+                  isLogin ? "تسجيل الدخول" : "إنشاء الحساب"
                 )}
               </Button>
+
+              {/* Toggle between login and register */}
+              <div className="text-center pt-4 border-t border-emerald-200">
+                <Button
+                  type="button"
+                  variant="ghost"
+                  onClick={toggleMode}
+                  className="arabic-text text-emerald-600 hover:text-emerald-800"
+                  data-testid="toggle-auth-mode"
+                >
+                  {isLogin 
+                    ? "ليس لديك حساب؟ إنشاء حساب جديد" 
+                    : "هل لديك حساب بالفعل؟ تسجيل الدخول"
+                  }
+                </Button>
+              </div>
             </form>
           </CardContent>
         </Card>
