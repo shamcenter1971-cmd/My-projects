@@ -146,6 +146,41 @@ class MithaqAPITester:
             self.log_test("User Retrieval", False, f"Failed to retrieve user - Status: {status}, Data: {data}")
             return False
 
+    def test_user_login_success(self):
+        """Test successful user login with existing email"""
+        if not self.test_users:
+            self.log_test("User Login Success", False, "No test users available")
+            return False
+            
+        # Use the first registered user's email for login
+        login_data = {
+            "email": self.test_users[0]['email']
+        }
+        
+        success, data, status = self.make_request('POST', 'login', login_data)
+        
+        if success and status == 200 and data.get('email') == login_data['email']:
+            self.log_test("User Login Success", True, f"Successfully logged in user: {data['name']} with email: {data['email']}")
+            return True
+        else:
+            self.log_test("User Login Success", False, f"Failed to login user - Status: {status}, Data: {data}")
+            return False
+
+    def test_user_login_invalid_email(self):
+        """Test login with non-existent email"""
+        login_data = {
+            "email": "nonexistent@test.com"
+        }
+        
+        success, data, status = self.make_request('POST', 'login', login_data)
+        
+        if not success and status == 404:
+            self.log_test("User Login Invalid Email", True, "Correctly rejected login with non-existent email")
+            return True
+        else:
+            self.log_test("User Login Invalid Email", False, f"Should have failed with 404, got Status: {status}, Data: {data}")
+            return False
+
     def test_user_pairing(self):
         """Test pairing two users"""
         if len(self.test_users) < 2:
