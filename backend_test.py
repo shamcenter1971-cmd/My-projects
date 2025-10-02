@@ -425,6 +425,11 @@ class MithaqAPITester:
         self.test_user_registration()
         self.test_duplicate_email_registration()
         self.test_user_retrieval()
+        
+        # Login Tests (NEW)
+        self.test_user_login_success()
+        self.test_user_login_invalid_email()
+        
         self.test_user_pairing()
         self.test_invalid_pairing_code()
         
