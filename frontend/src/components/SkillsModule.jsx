@@ -139,10 +139,10 @@ const SkillsModule = ({ user, partner, onBack }) => {
         <Card className="glass border-emerald-200 mb-6">
           <CardHeader>
             <CardTitle className="arabic-title text-emerald-800">
-              المهارات المتاحة
+              الأدوات المتاحة
             </CardTitle>
             <CardDescription className="arabic-text">
-              وحدات تعليمية قصيرة (5-15 دقيقة) لتطوير مهارات التواصل الإيجابي
+              وحدات تعليمية قصيرة (5-15 دقيقة) لتطوير مهارات التواصل الإيجابي وحل الخلافات
             </CardDescription>
           </CardHeader>
           <CardContent>
