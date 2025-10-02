@@ -419,6 +419,22 @@ async def get_point_history(user_id: str):
     transactions = await db.point_transactions.find({"$or": [{"user_id": user_id}, {"partner_id": user_id}]}).to_list(1000)
     return [PointTransaction(**parse_from_mongo(transaction)) for transaction in transactions]
 
+# Notification Routes
+@api_router.get("/notifications/{user_id}", response_model=List[Notification])
+async def get_user_notifications(user_id: str):
+    notifications = await db.notifications.find({"user_id": user_id}).sort("created_at", -1).to_list(50)
+    return [Notification(**parse_from_mongo(notification)) for notification in notifications]
+
+@api_router.post("/notifications/{notification_id}/read")
+async def mark_notification_read(notification_id: str):
+    await db.notifications.update_one({"id": notification_id}, {"$set": {"is_read": True}})
+    return {"message": "Notification marked as read"}
+
+@api_router.get("/notifications/{user_id}/unread-count")
+async def get_unread_notification_count(user_id: str):
+    count = await db.notifications.count_documents({"user_id": user_id, "is_read": False})
+    return {"unread_count": count}
+
 # Dashboard Routes
 @api_router.get("/dashboard/{user_id}")
 async def get_dashboard(user_id: str):
