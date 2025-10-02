@@ -135,7 +135,7 @@ const Dashboard = ({ user, partner, onLogout, onRefresh }) => {
         {dashboardData?.recent_behaviors?.length > 0 && (
           <Card className="glass border-emerald-200 mb-6">
             <CardHeader>
-              <CardTitle className="arabic-title text-emerald-800">آخر السلوكيات المسجلة</CardTitle>
+              <CardTitle className="arabic-title text-emerald-800">آخر السلوكيات المسجلة للزوجين</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               {dashboardData.recent_behaviors.map((behavior, index) => (
@@ -144,9 +144,14 @@ const Dashboard = ({ user, partner, onLogout, onRefresh }) => {
                   className={`p-3 rounded-lg ${behavior.behavior_type === 'positive' ? 'status-positive' : 'status-negative'}`}
                 >
                   <div className="flex justify-between items-center mb-2">
-                    <Badge variant="outline" className="arabic-text">
-                      {behavior.behavior_type === 'positive' ? 'إيجابي' : 'سلبي'}
-                    </Badge>
+                    <div className="flex items-center gap-2">
+                      <Badge variant="outline" className="arabic-text">
+                        {behavior.behavior_type === 'positive' ? 'إيجابي' : 'سلبي'}
+                      </Badge>
+                      <Badge variant="secondary" className="arabic-text text-xs">
+                        {behavior.user_id === user.id ? 'أنت' : partner.name}
+                      </Badge>
+                    </div>
                     <span className="text-xs text-gray-500 arabic-text">
                       {new Date(behavior.created_at).toLocaleDateString('ar-SA')}
                     </span>
