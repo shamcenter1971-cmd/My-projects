@@ -261,9 +261,14 @@ const BehaviorAnalyzer = ({ user, partner, onBack }) => {
                         data-testid={`behavior-${index}`}
                       >
                         <div className="flex justify-between items-center mb-3">
-                          <Badge variant="outline" className="arabic-text">
-                            {behavior.behavior_type === 'positive' ? 'إيجابي' : 'سلبي'}
-                          </Badge>
+                          <div className="flex items-center gap-2">
+                            <Badge variant="outline" className="arabic-text">
+                              {behavior.behavior_type === 'positive' ? 'إيجابي' : 'سلبي'}
+                            </Badge>
+                            <Badge variant="secondary" className="arabic-text text-xs">
+                              {behavior.user_id === user.id ? 'أنت' : partner.name}
+                            </Badge>
+                          </div>
                           <span className="text-xs text-gray-600 arabic-text">
                             {new Date(behavior.created_at).toLocaleDateString('ar-SA')}
                           </span>
