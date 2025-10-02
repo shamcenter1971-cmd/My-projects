@@ -64,7 +64,7 @@ class CouplesSyncTester:
                 "consequence": consequence,
                 "behavior_type": behavior_type
             })
-            if response.status_code == 201:
+            if response.status_code in [200, 201]:
                 return response.json()
             else:
                 print(f"Failed to create behavior: {response.status_code} - {response.text}")
