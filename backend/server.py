@@ -133,6 +133,15 @@ async def get_user(user_id: str):
         raise HTTPException(status_code=404, detail="User not found")
     return User(**parse_from_mongo(user))
 
+@api_router.post("/login", response_model=User)
+async def login_user(login_data: UserLogin):
+    # Find user by email
+    user = await db.users.find_one({"email": login_data.email})
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    return User(**parse_from_mongo(user))
+
 @api_router.post("/users/{user_id}/pair")
 async def pair_with_partner(user_id: str, pair_request: PairRequest):
     # Find the user making the request
