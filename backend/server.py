@@ -54,6 +54,9 @@ class UserCreate(BaseModel):
     name: str
     email: str
 
+class UserLogin(BaseModel):
+    email: str
+
 class PairRequest(BaseModel):
     pairing_code: str
 
