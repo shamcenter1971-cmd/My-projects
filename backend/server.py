@@ -459,11 +459,15 @@ async def get_dashboard(user_id: str):
     if partner:
         reinforcements = await db.reinforcements.find({"user_id": partner["id"], "is_active": True}).to_list(1000)
     
+    # Get unread notifications
+    unread_notifications = await db.notifications.find({"user_id": user_id, "is_read": False}).sort("created_at", -1).to_list(10)
+    
     return {
         "user": User(**parse_from_mongo(user)),
         "partner": User(**parse_from_mongo(partner)) if partner else None,
         "recent_behaviors": [BehaviorEntry(**parse_from_mongo(behavior)) for behavior in recent_behaviors],
-        "available_reinforcements": [ReinforcementItem(**parse_from_mongo(reinforcement)) for reinforcement in reinforcements]
+        "available_reinforcements": [ReinforcementItem(**parse_from_mongo(reinforcement)) for reinforcement in reinforcements],
+        "unread_notifications": [Notification(**parse_from_mongo(notification)) for notification in unread_notifications]
     }
 
 # Health check
