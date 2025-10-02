@@ -32,7 +32,7 @@ const BehaviorAnalyzer = ({ user, partner, onBack }) => {
 
   const fetchBehaviors = async () => {
     try {
-      const response = await axios.get(`${API}/behaviors/${user.id}`);
+      const response = await axios.get(`${API}/behaviors/${user.id}/couple`);
       setBehaviors(response.data);
     } catch (error) {
       toast.error("حدث خطأ في تحميل السلوكيات");
@@ -43,8 +43,8 @@ const BehaviorAnalyzer = ({ user, partner, onBack }) => {
 
   const fetchPatterns = async () => {
     try {
-      const response = await axios.get(`${API}/behaviors/${user.id}/patterns`);
-      setPatterns(response.data.patterns || []);
+      const response = await axios.get(`${API}/behaviors/${user.id}/couple-patterns`);
+      setPatterns(response.data.user_patterns || []);
     } catch (error) {
       console.error("خطأ في تحميل الأنماط:", error);
     }
