@@ -87,7 +87,7 @@ const Dashboard = ({ user, partner, onLogout, onRefresh }) => {
         </div>
 
         {/* Quick Actions */}
-        <div className="grid md:grid-cols-2 gap-4 mb-6">
+        <div className="grid md:grid-cols-3 gap-4 mb-6">
           <Card 
             className="glass border-emerald-200 card-hover cursor-pointer"
             onClick={() => navigate('/behavior-analyzer')}
@@ -105,6 +105,27 @@ const Dashboard = ({ user, partner, onLogout, onRefresh }) => {
             <CardContent>
               <p className="text-sm text-emerald-600 arabic-text">
                 اكتشف الأسباب والنتائج وحسن طريقة تفاعلك
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card 
+            className="glass border-emerald-200 card-hover cursor-pointer"
+            onClick={() => navigate('/skills')}
+            data-testid="skills-module-card"
+          >
+            <CardHeader>
+              <CardTitle className="arabic-title text-emerald-800 flex items-center gap-3">
+                <span className="text-2xl">🧘</span>
+                المهارات التعليمية
+              </CardTitle>
+              <CardDescription className="arabic-text">
+                تعلم السلوكيات البديلة للأنماط السلبية
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-emerald-600 arabic-text">
+                وحدات قصيرة لتطوير مهارات التواصل الإيجابي
               </p>
             </CardContent>
           </Card>
