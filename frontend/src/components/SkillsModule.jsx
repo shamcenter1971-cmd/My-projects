@@ -127,7 +127,7 @@ const SkillsModule = ({ user, partner, onBack }) => {
           </Button>
           <div>
             <h1 className="text-3xl font-bold arabic-title text-emerald-800">
-              الوحدات التعليمية (المهارات)
+              أدوات المساعدة وحل الخلافات
             </h1>
             <p className="text-emerald-600 arabic-text">
               تعلم المهارات البديلة للسلوكيات السلبية المسجلة في محلل السلوك
