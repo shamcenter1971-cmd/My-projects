@@ -217,6 +217,51 @@ async def analyze_behavior_patterns(user_id: str):
     sorted_patterns = sorted(patterns.items(), key=lambda x: x[1]["count"], reverse=True)
     return {"patterns": sorted_patterns[:10]}  # Return top 10 patterns
 
+@api_router.get("/behaviors/{user_id}/couple-patterns")
+async def analyze_couple_behavior_patterns(user_id: str):
+    """Analyze behavioral patterns for both partners in the couple"""
+    # Get current user
+    user = await db.users.find_one({"id": user_id})
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    # Get behaviors for both user and partner
+    user_ids = [user_id]
+    if user.get("partner_id"):
+        user_ids.append(user["partner_id"])
+    
+    behaviors = await db.behaviors.find({"user_id": {"$in": user_ids}}).to_list(1000)
+    
+    # Pattern analysis by person
+    user_patterns = {}
+    partner_patterns = {}
+    
+    for behavior in behaviors:
+        key = f"{behavior['antecedent']} → {behavior['behavior']}"
+        
+        if behavior["user_id"] == user_id:
+            # Current user's patterns
+            if key not in user_patterns:
+                user_patterns[key] = {"count": 0, "consequences": [], "type": behavior["behavior_type"]}
+            user_patterns[key]["count"] += 1
+            user_patterns[key]["consequences"].append(behavior["consequence"])
+        else:
+            # Partner's patterns
+            if key not in partner_patterns:
+                partner_patterns[key] = {"count": 0, "consequences": [], "type": behavior["behavior_type"]}
+            partner_patterns[key]["count"] += 1
+            partner_patterns[key]["consequences"].append(behavior["consequence"])
+    
+    # Sort patterns
+    sorted_user_patterns = sorted(user_patterns.items(), key=lambda x: x[1]["count"], reverse=True)[:5]
+    sorted_partner_patterns = sorted(partner_patterns.items(), key=lambda x: x[1]["count"], reverse=True)[:5]
+    
+    return {
+        "user_patterns": sorted_user_patterns,
+        "partner_patterns": sorted_partner_patterns,
+        "total_behaviors": len(behaviors)
+    }
+
 # Reinforcement Bank Routes
 @api_router.get("/reinforcement-categories")
 async def get_reinforcement_categories():
