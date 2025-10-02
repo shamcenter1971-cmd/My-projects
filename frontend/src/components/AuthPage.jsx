@@ -10,6 +10,7 @@ const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
 const AuthPage = ({ onLogin }) => {
+  const [isLogin, setIsLogin] = useState(false); // Toggle between login and register
   const [formData, setFormData] = useState({
     name: "",
     email: ""
@@ -21,11 +22,22 @@ const AuthPage = ({ onLogin }) => {
     setLoading(true);
 
     try {
-      const response = await axios.post(`${API}/users`, formData);
-      toast.success("تم إنشاء الحساب بنجاح! يمكنك الآن ربط حسابك مع شريك حياتك");
-      onLogin(response.data);
+      if (isLogin) {
+        // Login flow
+        const response = await axios.post(`${API}/login`, {
+          email: formData.email
+        });
+        toast.success("تم تسجيل الدخول بنجاح!");
+        onLogin(response.data);
+      } else {
+        // Registration flow
+        const response = await axios.post(`${API}/users`, formData);
+        toast.success("تم إنشاء الحساب بنجاح! يمكنك الآن ربط حسابك مع شريك حياتك");
+        onLogin(response.data);
+      }
     } catch (error) {
-      const message = error.response?.data?.detail || "حدث خطأ أثناء إنشاء الحساب";
+      const message = error.response?.data?.detail || 
+        (isLogin ? "حدث خطأ أثناء تسجيل الدخول" : "حدث خطأ أثناء إنشاء الحساب");
       toast.error(message);
     } finally {
       setLoading(false);
@@ -37,6 +49,11 @@ const AuthPage = ({ onLogin }) => {
       ...prev,
       [e.target.name]: e.target.value
     }));
+  };
+
+  const toggleMode = () => {
+    setIsLogin(!isLogin);
+    setFormData({ name: "", email: "" }); // Reset form
   };
 
   return (
