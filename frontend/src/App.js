@@ -143,6 +143,16 @@ function App() {
               />
             } 
           />
+          <Route 
+            path="/skills" 
+            element={
+              <SkillsModule 
+                user={user} 
+                partner={partner}
+                onBack={() => window.history.back()}
+              />
+            } 
+          />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </BrowserRouter>
