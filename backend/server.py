@@ -184,6 +184,22 @@ async def get_user_behaviors(user_id: str):
     behaviors = await db.behaviors.find({"user_id": user_id}).to_list(1000)
     return [BehaviorEntry(**parse_from_mongo(behavior)) for behavior in behaviors]
 
+@api_router.get("/behaviors/{user_id}/couple", response_model=List[BehaviorEntry])
+async def get_couple_behaviors(user_id: str):
+    """Get behaviors for both partners in the couple"""
+    # Get current user
+    user = await db.users.find_one({"id": user_id})
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    # Get behaviors for both user and partner
+    user_ids = [user_id]
+    if user.get("partner_id"):
+        user_ids.append(user["partner_id"])
+    
+    behaviors = await db.behaviors.find({"user_id": {"$in": user_ids}}).sort("created_at", -1).to_list(1000)
+    return [BehaviorEntry(**parse_from_mongo(behavior)) for behavior in behaviors]
+
 @api_router.get("/behaviors/{user_id}/patterns")
 async def analyze_behavior_patterns(user_id: str):
     behaviors = await db.behaviors.find({"user_id": user_id}).to_list(1000)
