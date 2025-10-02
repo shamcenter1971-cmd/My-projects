@@ -106,6 +106,18 @@ class PointTransactionCreate(BaseModel):
     description: str
     reinforcement_id: Optional[str] = None
 
+class Notification(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    user_id: str
+    type: str  # "negative_behavior_recipient" or "negative_behavior_offender"
+    title: str
+    message: str
+    action_url: str
+    priority_skills: List[str]
+    behavior_id: Optional[str] = None
+    is_read: bool = False
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
 # Authentication helper functions
 def generate_pairing_code():
     return ''.join(secrets.choice('0123456789ABCDEF') for _ in range(8))
