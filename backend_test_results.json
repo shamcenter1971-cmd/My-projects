@@ -1,6 +1,6 @@
 {
-  "total_tests": 18,
-  "passed_tests": 18,
+  "total_tests": 20,
+  "passed_tests": 20,
   "failed_tests": 0,
   "success_rate": 100.0,
   "test_details": [
@@ -9,126 +9,140 @@
       "status": "✅ PASS",
       "success": true,
       "details": "API is running - Status: 200",
-      "timestamp": "2025-10-02T19:50:17.747795"
+      "timestamp": "2025-10-02T20:28:56.141899"
     },
     {
       "test_name": "User Registration 1",
       "status": "✅ PASS",
       "success": true,
-      "details": "User created with ID: 4648fea9-5ade-4d7c-97c2-63db95ea5e4a, Pairing Code: F5EBF51C",
-      "timestamp": "2025-10-02T19:50:17.819718"
+      "details": "User created with ID: 96c71f70-1fbb-4e6e-86d9-752128374b0a, Pairing Code: 64E5052A",
+      "timestamp": "2025-10-02T20:28:56.186665"
     },
     {
       "test_name": "User Registration 2",
       "status": "✅ PASS",
       "success": true,
-      "details": "User created with ID: 475b8b3d-6823-48b9-812e-e12b6ef4fbb5, Pairing Code: 1ECF7EF6",
-      "timestamp": "2025-10-02T19:50:17.858634"
+      "details": "User created with ID: 679bf289-4f32-4988-8318-48deafaf997d, Pairing Code: EAA673F0",
+      "timestamp": "2025-10-02T20:28:56.244342"
     },
     {
       "test_name": "Duplicate Email Prevention",
       "status": "✅ PASS",
       "success": true,
       "details": "Correctly prevented duplicate email registration",
-      "timestamp": "2025-10-02T19:50:17.898739"
+      "timestamp": "2025-10-02T20:28:56.325393"
     },
     {
       "test_name": "User Retrieval",
       "status": "✅ PASS",
       "success": true,
-      "details": "Successfully retrieved user: أحمد محمد 195017",
-      "timestamp": "2025-10-02T19:50:17.934516"
+      "details": "Successfully retrieved user: أحمد محمد 202856",
+      "timestamp": "2025-10-02T20:28:56.366689"
+    },
+    {
+      "test_name": "User Login Success",
+      "status": "✅ PASS",
+      "success": true,
+      "details": "Successfully logged in user: أحمد محمد 202856 with email: ahmed_202856@test.com",
+      "timestamp": "2025-10-02T20:28:56.442625"
+    },
+    {
+      "test_name": "User Login Invalid Email",
+      "status": "✅ PASS",
+      "success": true,
+      "details": "Correctly rejected login with non-existent email",
+      "timestamp": "2025-10-02T20:28:56.525411"
     },
     {
       "test_name": "User Pairing",
       "status": "✅ PASS",
       "success": true,
-      "details": "Successfully paired أحمد محمد 195017 with فاطمة أحمد 195017",
-      "timestamp": "2025-10-02T19:50:17.979905"
+      "details": "Successfully paired أحمد محمد 202856 with فاطمة أحمد 202856",
+      "timestamp": "2025-10-02T20:28:56.565088"
     },
     {
       "test_name": "Invalid Pairing Code",
       "status": "✅ PASS",
       "success": true,
       "details": "Correctly rejected invalid pairing code",
-      "timestamp": "2025-10-02T19:50:18.023398"
+      "timestamp": "2025-10-02T20:28:56.602516"
     },
     {
       "test_name": "Positive Behavior Entry",
       "status": "✅ PASS",
       "success": true,
-      "details": "Created positive behavior entry: 389bc244-4c36-48e2-bfc6-bee0d4c5072d",
-      "timestamp": "2025-10-02T19:50:18.091452"
+      "details": "Created positive behavior entry: c7ff0f3d-f231-4b45-9e73-2ae1efb3285e",
+      "timestamp": "2025-10-02T20:28:56.642945"
     },
     {
       "test_name": "Negative Behavior Entry",
       "status": "✅ PASS",
       "success": true,
-      "details": "Created negative behavior entry: 6bd61d8e-a6a7-4258-8e34-44f3563b043f",
-      "timestamp": "2025-10-02T19:50:18.129652"
+      "details": "Created negative behavior entry: f8c42af9-30eb-4cb6-ac6f-8c4529e8dc5c",
+      "timestamp": "2025-10-02T20:28:56.683394"
     },
     {
       "test_name": "Behavior Retrieval",
       "status": "✅ PASS",
       "success": true,
       "details": "Retrieved 2 behaviors for user",
-      "timestamp": "2025-10-02T19:50:18.168191"
+      "timestamp": "2025-10-02T20:28:56.717908"
     },
     {
       "test_name": "Behavior Patterns",
       "status": "✅ PASS",
       "success": true,
       "details": "Retrieved behavior patterns: 2 patterns found",
-      "timestamp": "2025-10-02T19:50:18.204479"
+      "timestamp": "2025-10-02T20:28:56.754960"
     },
     {
       "test_name": "Reinforcement Categories",
       "status": "✅ PASS",
       "success": true,
       "details": "Retrieved 5 categories",
-      "timestamp": "2025-10-02T19:50:18.240613"
+      "timestamp": "2025-10-02T20:28:56.790455"
     },
     {
       "test_name": "Reinforcement Templates",
       "status": "✅ PASS",
       "success": true,
       "details": "Retrieved 10 templates",
-      "timestamp": "2025-10-02T19:50:18.275834"
+      "timestamp": "2025-10-02T20:28:56.826286"
     },
     {
       "test_name": "Reinforcement Creation",
       "status": "✅ PASS",
       "success": true,
-      "details": "Created reinforcement: 811621d5-c632-41cb-b504-eb3c74246bf5",
-      "timestamp": "2025-10-02T19:50:18.330493"
+      "details": "Created reinforcement: 58d1ceb7-99e5-49f4-bcdf-3ea8a85dbb24",
+      "timestamp": "2025-10-02T20:28:56.865051"
     },
     {
       "test_name": "Partner Reinforcements",
       "status": "✅ PASS",
       "success": true,
       "details": "Retrieved 0 partner reinforcements",
-      "timestamp": "2025-10-02T19:50:18.412075"
+      "timestamp": "2025-10-02T20:28:56.908572"
     },
     {
       "test_name": "Point Awarding",
       "status": "✅ PASS",
       "success": true,
       "details": "Successfully awarded points to partner",
-      "timestamp": "2025-10-02T19:50:18.472878"
+      "timestamp": "2025-10-02T20:28:56.945068"
     },
     {
       "test_name": "Point History",
       "status": "✅ PASS",
       "success": true,
       "details": "Retrieved 1 point transactions",
-      "timestamp": "2025-10-02T19:50:18.509826"
+      "timestamp": "2025-10-02T20:28:56.980518"
     },
     {
       "test_name": "Dashboard",
       "status": "✅ PASS",
       "success": true,
-      "details": "Retrieved dashboard data for user: أحمد محمد 195017",
-      "timestamp": "2025-10-02T19:50:18.553481"
+      "details": "Retrieved dashboard data for user: أحمد محمد 202856",
+      "timestamp": "2025-10-02T20:28:57.018513"
     }
   ],
   "test_users_created": 2
