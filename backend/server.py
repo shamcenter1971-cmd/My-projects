@@ -177,6 +177,48 @@ async def create_behavior_entry(behavior_data: BehaviorCreate, user_id: str):
     if behavior_data.behavior_type == "positive":
         await db.users.update_one({"id": user_id}, {"$inc": {"points": 1}})
     
+    # CRITICAL: Role-based notification system for negative behaviors
+    if behavior_data.behavior_type == "negative":
+        # Get user info to find partner
+        user = await db.users.find_one({"id": user_id})
+        if user and user.get("partner_id"):
+            partner_id = user["partner_id"]
+            
+            # Create notifications for both users with different messages
+            notifications = []
+            
+            # 1. Notification for the user who submitted the log (recipient of negative behavior)
+            recipient_notification = {
+                "id": str(uuid.uuid4()),
+                "user_id": user_id,
+                "type": "negative_behavior_recipient",
+                "title": "تم تسجيل سلوك أثّر عليك",
+                "message": "تم تسجيل سلوك أثّر عليك. انتقل الآن إلى أدوات المساعدة وحل الخلافات لمعرفة مهارات مواجهة هذا السلوك والحفاظ على حدودك العاطفية.",
+                "action_url": "/help-tools",
+                "priority_skills": ["active_listening", "expressing_needs", "boundary_setting"],
+                "behavior_id": behavior_obj.id,
+                "is_read": False,
+                "created_at": datetime.now(timezone.utc).isoformat()
+            }
+            
+            # 2. Notification for the partner whose behavior was logged (offender)
+            offender_notification = {
+                "id": str(uuid.uuid4()),
+                "user_id": partner_id,
+                "type": "negative_behavior_offender", 
+                "title": "تنبيه سلوك سلبي!",
+                "message": "تنبيه سلوك سلبي! تم تسجيل سلوك منتقد من شريكك. للمساعدة في تحليل هذا السلوك وتجاوزه في المرات القادمة، انتقل إلى أدوات المساعدة وحل الخلافات.",
+                "action_url": "/help-tools", 
+                "priority_skills": ["timeout", "self_soothing", "anger_management"],
+                "behavior_id": behavior_obj.id,
+                "is_read": False,
+                "created_at": datetime.now(timezone.utc).isoformat()
+            }
+            
+            # Store notifications in database
+            await db.notifications.insert_one(recipient_notification)
+            await db.notifications.insert_one(offender_notification)
+    
     return behavior_obj
 
 @api_router.get("/behaviors/{user_id}", response_model=List[BehaviorEntry])
