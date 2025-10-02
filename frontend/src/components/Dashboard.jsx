@@ -116,16 +116,16 @@ const Dashboard = ({ user, partner, onLogout, onRefresh }) => {
           >
             <CardHeader>
               <CardTitle className="arabic-title text-emerald-800 flex items-center gap-3">
-                <span className="text-2xl">🧘</span>
-                المهارات التعليمية
+                <span className="text-2xl">🛠️</span>
+                أدوات المساعدة وحل الخلافات
               </CardTitle>
               <CardDescription className="arabic-text">
-                تعلم السلوكيات البديلة للأنماط السلبية
+                تعلم السلوكيات البديلة للأنماط السلبية وحل الخلافات
               </CardDescription>
             </CardHeader>
             <CardContent>
               <p className="text-sm text-emerald-600 arabic-text">
-                وحدات قصيرة لتطوير مهارات التواصل الإيجابي
+                أدوات عملية لتحسين التواصل والتعامل مع النزاعات
               </p>
             </CardContent>
           </Card>
