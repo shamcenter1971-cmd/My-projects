@@ -27,6 +27,11 @@ const Dashboard = ({ user, partner, onLogout, onRefresh }) => {
     try {
       const response = await axios.get(`${API}/dashboard/${user.id}`);
       setDashboardData(response.data);
+      
+      // Get unread notification count
+      if (response.data.unread_notifications) {
+        setUnreadCount(response.data.unread_notifications.length);
+      }
     } catch (error) {
       toast.error("حدث خطأ في تحميل البيانات");
     } finally {
