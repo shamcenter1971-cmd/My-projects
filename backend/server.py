@@ -377,8 +377,12 @@ async def get_dashboard(user_id: str):
     if user.get("partner_id"):
         partner = await db.users.find_one({"id": user["partner_id"]})
     
-    # Get recent behaviors
-    recent_behaviors = await db.behaviors.find({"user_id": user_id}).sort("created_at", -1).to_list(5)
+    # Get recent behaviors for both partners
+    user_ids = [user_id]
+    if user.get("partner_id"):
+        user_ids.append(user["partner_id"])
+    
+    recent_behaviors = await db.behaviors.find({"user_id": {"$in": user_ids}}).sort("created_at", -1).to_list(10)
     
     # Get reinforcement bank
     reinforcements = []
