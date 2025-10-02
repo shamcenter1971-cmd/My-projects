@@ -144,6 +144,16 @@ function App() {
             } 
           />
           <Route 
+            path="/help-tools" 
+            element={
+              <SkillsModule 
+                user={user} 
+                partner={partner}
+                onBack={() => window.history.back()}
+              />
+            } 
+          />
+          <Route 
             path="/skills" 
             element={
               <SkillsModule 
