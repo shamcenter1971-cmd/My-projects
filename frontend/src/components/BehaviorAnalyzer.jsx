@@ -240,10 +240,10 @@ const BehaviorAnalyzer = ({ user, partner, onBack }) => {
             <Card className="glass border-emerald-200">
               <CardHeader>
                 <CardTitle className="arabic-title text-emerald-800">
-                  سجل السلوكيات
+                  سجل السلوكيات للزوجين
                 </CardTitle>
                 <CardDescription className="arabic-text">
-                  جميع السلوكيات المسجلة مؤخراً
+                  جميع السلوكيات المسجلة من قبلكما معاً - مرتبة حسب الأحدث
                 </CardDescription>
               </CardHeader>
               <CardContent>
