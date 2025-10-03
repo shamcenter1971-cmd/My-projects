@@ -206,6 +206,10 @@ class CommitmentPhraseCreate(BaseModel):
     phrase: str
     display_on_dashboard: bool = True
 
+class RepairAction(BaseModel):
+    action_type: str  # "acknowledge", "pay_compensation", "complete_skill"
+    skill_id: Optional[str] = None
+
 # Authentication helper functions
 def generate_pairing_code():
     return ''.join(secrets.choice('0123456789ABCDEF') for _ in range(8))
