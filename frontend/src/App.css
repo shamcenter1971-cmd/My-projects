@@ -230,8 +230,13 @@ body {
 }
 
 .skill-section h2, .skill-section h3, .skill-section h4 {
-  margin-bottom: 1rem; /* Increased margin for headers */
+  margin-bottom: 1rem;
   line-height: 1.5;
+  width: 100%; /* Full width headers */
+  min-width: 0;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal; /* Critical: Allow normal text wrapping */
 }
 
 .skill-section p {
