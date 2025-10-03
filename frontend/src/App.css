@@ -81,7 +81,12 @@ body {
   line-height: 1.8;
   letter-spacing: 0.01em;
   word-spacing: 0.1em;
-  margin-bottom: 0.5rem; /* Added margin for better spacing */
+  margin-bottom: 0.5rem;
+  width: 100%; /* Ensure full width container */
+  min-width: 0; /* Allow shrinking */
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal; /* Allow text wrapping */
 }
 
 /* RTL-specific button and component fixes */
