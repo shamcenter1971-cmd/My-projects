@@ -538,74 +538,83 @@ async def get_active_repair_cycle(user_id: str):
 
 @api_router.post("/repair-cycles/{cycle_id}/action")
 async def perform_repair_action(cycle_id: str, action: RepairAction, user_id: str):
-    # Get the repair cycle
-    repair_cycle = await db.repair_cycles.find_one({"id": cycle_id})
-    if not repair_cycle:
-        raise HTTPException(status_code=404, detail="Repair cycle not found")
-    
-    # Perform the action based on type
-    if action.action_type == "acknowledge":
-        await db.repair_cycles.update_one(
-            {"id": cycle_id},
-            {"$set": {"offender_acknowledged": True, "status": "acknowledged"}}
-        )
-        return {"message": "Acknowledgment recorded", "next_step": "pay_compensation"}
+    try:
+        # Get the repair cycle
+        repair_cycle = await db.repair_cycles.find_one({"id": cycle_id})
+        if not repair_cycle:
+            raise HTTPException(status_code=404, detail="Repair cycle not found")
         
-    elif action.action_type == "pay_compensation":
-        # Transfer 3 points from offender to recipient
-        await db.users.update_one({"id": repair_cycle["offender_id"]}, {"$inc": {"points": -3}})
-        await db.users.update_one({"id": repair_cycle["recipient_id"]}, {"$inc": {"points": 3}})
+        # Perform the action based on type
+        if action.action_type == "acknowledge":
+            await db.repair_cycles.update_one(
+                {"id": cycle_id},
+                {"$set": {"offender_acknowledged": True, "status": "acknowledged"}}
+            )
+            return {"message": "Acknowledgment recorded", "next_step": "pay_compensation"}
+            
+        elif action.action_type == "pay_compensation":
+            # Transfer 3 points from offender to recipient
+            await db.users.update_one({"id": repair_cycle["offender_id"]}, {"$inc": {"points": -3}})
+            await db.users.update_one({"id": repair_cycle["recipient_id"]}, {"$inc": {"points": 3}})
+            
+            # Record transaction
+            transaction = PointTransaction(
+                user_id=repair_cycle["offender_id"],
+                partner_id=repair_cycle["recipient_id"],
+                points=3,
+                transaction_type="repair_compensation",
+                description="تعويض عن سلوك سلبي (دورة الإصلاح الفورية)"
+            )
+            
+            prepared_data = prepare_for_mongo(transaction.dict())
+            await db.point_transactions.insert_one(prepared_data)
+            
+            await db.repair_cycles.update_one(
+                {"id": cycle_id},
+                {"$set": {"compensation_paid": True, "status": "payment_completed"}}
+            )
+            
+            # Send confirmation to recipient using proper Notification model
+            recipient_confirmation = Notification(
+                user_id=repair_cycle["recipient_id"],
+                type="repair_confirmation",
+                title="تم الإقرار والتعويض",
+                message="شريكك أقرّ بالملاحظة وأرسل لك 3 نقاط تعويض كبادرة اعتذار، وبدأ التدريب على مهارة الاستراحة والتهدئة الذاتية.",
+                action_url="/help-tools",
+                priority_skills=["active_listening", "expressing_needs"],
+                behavior_id=repair_cycle["behavior_id"],
+                is_read=False
+            )
+            
+            # Properly serialize and insert
+            confirmation_prepared = prepare_for_mongo(recipient_confirmation.dict())
+            await db.notifications.insert_one(confirmation_prepared)
+            
+            return {"message": "Compensation paid", "next_step": "complete_skill"}
+            
+        elif action.action_type == "complete_skill":
+            # Mark skill as completed
+            current_time = datetime.now(timezone.utc).isoformat()
+            await db.repair_cycles.update_one(
+                {"id": cycle_id},
+                {"$set": {
+                    "offender_skill_completed": action.skill_id,
+                    "status": "learning_completed",
+                    "completed_at": current_time
+                }}
+            )
+            
+            return {"message": "Repair cycle completed successfully"}
         
-        # Record transaction
-        transaction = PointTransaction(
-            user_id=repair_cycle["offender_id"],
-            partner_id=repair_cycle["recipient_id"],
-            points=3,
-            transaction_type="repair_compensation",
-            description="تعويض عن سلوك سلبي (دورة الإصلاح الفورية)"
-        )
-        
-        prepared_data = prepare_for_mongo(transaction.dict())
-        await db.point_transactions.insert_one(prepared_data)
-        
-        await db.repair_cycles.update_one(
-            {"id": cycle_id},
-            {"$set": {"compensation_paid": True, "status": "payment_completed"}}
-        )
-        
-        # Send confirmation to recipient using proper Notification model
-        recipient_confirmation = Notification(
-            user_id=repair_cycle["recipient_id"],
-            type="repair_confirmation",
-            title="تم الإقرار والتعويض",
-            message="شريكك أقرّ بالملاحظة وأرسل لك 3 نقاط تعويض كبادرة اعتذار، وبدأ التدريب على مهارة الاستراحة والتهدئة الذاتية.",
-            action_url="/help-tools",
-            priority_skills=["active_listening", "expressing_needs"],
-            behavior_id=repair_cycle["behavior_id"],
-            is_read=False
-        )
-        
-        # Properly serialize and insert
-        confirmation_prepared = prepare_for_mongo(recipient_confirmation.dict())
-        await db.notifications.insert_one(confirmation_prepared)
-        
-        return {"message": "Compensation paid", "next_step": "complete_skill"}
-        
-    elif action.action_type == "complete_skill":
-        # Mark skill as completed
-        await db.repair_cycles.update_one(
-            {"id": cycle_id},
-            {"$set": {
-                "offender_skill_completed": action.skill_id,
-                "status": "learning_completed",
-                "completed_at": datetime.now(timezone.utc).isoformat()
-            }}
-        )
-        
-        return {"message": "Repair cycle completed successfully"}
-    
-    else:
-        raise HTTPException(status_code=400, detail="Invalid action type")
+        else:
+            raise HTTPException(status_code=400, detail="Invalid action type")
+            
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error in repair cycle action: {str(e)}")
+        logger.error(f"Cycle ID: {cycle_id}, Action: {action}, User ID: {user_id}")
+        raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
 
 # Notification Routes
 @api_router.get("/notifications/{user_id}", response_model=List[Notification])
