@@ -311,43 +311,51 @@ const SkillsModule = ({ user, partner, onBack }) => {
               الأدوات المتاحة
             </CardTitle>
             <CardDescription className="arabic-text">
-              وحدات تعليمية قصيرة (5-15 دقيقة) لتطوير مهارات التواصل الإيجابي وحل الخلافات
+              وحدات تعليمية قصيرة (10-15 دقيقة) لتطوير مهارات التواصل الإيجابي وحل الخلافات
             </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="grid gap-4">
-              <div 
-                className={`p-4 border rounded-lg cursor-pointer transition-all ${
-                  activeModule === "timeout" ? "border-emerald-400 bg-emerald-50" : "border-emerald-200 hover:bg-emerald-50"
-                }`}
-                onClick={() => setActiveModule("timeout")}
-                data-testid="timeout-skill-card"
-              >
-                <div className="flex justify-between items-center">
-                  <div className="flex-1">
-                    <h3 className="font-semibold arabic-text text-emerald-800">
-                      {timeoutModule.title}
-                    </h3>
-                    <p className="text-sm text-emerald-600 arabic-text mt-1">
-                      {timeoutModule.description}
-                    </p>
-                    <div className="flex items-center gap-2 mt-2">
-                      <Badge variant="secondary" className="arabic-text text-xs">
-                        {timeoutModule.duration}
-                      </Badge>
-                      <Badge variant="secondary" className="arabic-text text-xs">
-                        3 أقسام
-                      </Badge>
+              {allModules.map((module) => (
+                <div 
+                  key={module.id}
+                  className={`p-4 border rounded-lg cursor-pointer transition-all ${
+                    activeModule === module.id ? "border-emerald-400 bg-emerald-50" : "border-emerald-200 hover:bg-emerald-50"
+                  }`}
+                  onClick={() => setActiveModule(module.id)}
+                  data-testid={`${module.id}-skill-card`}
+                >
+                  <div className="flex justify-between items-center">
+                    <div className="flex-1">
+                      <h3 className="font-semibold arabic-text text-emerald-800">
+                        {module.title}
+                      </h3>
+                      <p className="text-sm text-emerald-600 arabic-text mt-1">
+                        {module.description}
+                      </p>
+                      {module.goal && (
+                        <p className="text-xs text-emerald-500 arabic-text mt-1 font-medium">
+                          الهدف: {module.goal}
+                        </p>
+                      )}
+                      <div className="flex items-center gap-2 mt-2">
+                        <Badge variant="secondary" className="arabic-text text-xs">
+                          {module.duration}
+                        </Badge>
+                        <Badge variant="secondary" className="arabic-text text-xs">
+                          {module.sections.length} أقسام
+                        </Badge>
+                      </div>
                     </div>
+                    {completedModules.has(module.id) && (
+                      <div className="flex items-center gap-1 text-emerald-600">
+                        <span className="text-lg">✅</span>
+                        <span className="text-xs arabic-text">مكتمل</span>
+                      </div>
+                    )}
                   </div>
-                  {completedModules.has("timeout") && (
-                    <div className="flex items-center gap-1 text-emerald-600">
-                      <span className="text-lg">✅</span>
-                      <span className="text-xs arabic-text">مكتمل</span>
-                    </div>
-                  )}
                 </div>
-              </div>
+              ))}
             </div>
           </CardContent>
         </Card>
