@@ -427,6 +427,198 @@ class MithaqAPITester:
             self.log_test("Point History", False, f"Failed to retrieve point history - Status: {status}")
             return False
 
+    def test_behavior_by_id(self):
+        """Test getting specific behavior by ID - BETA FEATURE: A-B-C Context Injection"""
+        if not self.test_users:
+            self.log_test("BETA: Behavior by ID", False, "No test users available")
+            return False
+            
+        user_id = self.test_users[0]['id']
+        
+        # First create a behavior to test with
+        test_behavior = {
+            "antecedent": "شريكي تأخر عن الموعد المحدد",
+            "behavior": "غضبت ورفعت صوتي عليه أمام الأطفال",
+            "consequence": "توتر الجو وانسحب من النقاش وشعر الأطفال بالخوف",
+            "behavior_type": "negative"
+        }
+        
+        success, behavior_data, status = self.make_request('POST', f'behaviors?user_id={user_id}', test_behavior)
+        
+        if success and status == 200 and 'id' in behavior_data:
+            behavior_id = behavior_data['id']
+            
+            # Now test the new endpoint to get behavior by ID
+            success2, data, status2 = self.make_request('GET', f'behavior/{behavior_id}')
+            
+            if success2 and status2 == 200:
+                # Verify A-B-C context is properly returned
+                if (data.get('antecedent') == test_behavior['antecedent'] and 
+                    data.get('behavior') == test_behavior['behavior'] and 
+                    data.get('consequence') == test_behavior['consequence']):
+                    self.log_test("BETA: A-B-C Context Injection", True, f"Successfully retrieved behavior {behavior_id} with full A-B-C context")
+                    return True
+                else:
+                    self.log_test("BETA: A-B-C Context Injection", False, "A-B-C context data incomplete or incorrect")
+                    return False
+            else:
+                self.log_test("BETA: A-B-C Context Injection", False, f"Failed to retrieve behavior by ID - Status: {status2}")
+                return False
+        else:
+            self.log_test("BETA: A-B-C Context Injection", False, "Failed to create test behavior for ID retrieval")
+            return False
+
+    def test_reinforcement_redemption(self):
+        """Test reinforcement redemption with point deduction - BETA FEATURE: Points Deduction Mechanism"""
+        if len(self.test_users) < 2:
+            self.log_test("BETA: Reinforcement Redemption", False, "Need paired users for this test")
+            return False
+            
+        user_id = self.test_users[0]['id']
+        partner_id = self.test_users[1]['id']
+        
+        # First, award some points to the user for testing
+        point_data = {
+            "partner_id": user_id,
+            "points": 50,
+            "transaction_type": "earned",
+            "description": "Test points for redemption testing"
+        }
+        
+        success, _, status = self.make_request('POST', f'points/award?user_id={partner_id}', point_data)
+        
+        if not success:
+            self.log_test("BETA: Reinforcement Redemption", False, "Failed to award test points")
+            return False
+        
+        # Create a reinforcement item for the partner
+        reinforcement_data = {
+            "title": "عناق لمدة 30 ثانية",
+            "category": "affection",
+            "cost": 10
+        }
+        
+        success2, reinforcement, status2 = self.make_request('POST', f'reinforcements?user_id={partner_id}', reinforcement_data)
+        
+        if success2 and status2 == 200 and 'id' in reinforcement:
+            reinforcement_id = reinforcement['id']
+            
+            # Get user's current points before redemption
+            success3, user_data, status3 = self.make_request('GET', f'users/{user_id}')
+            
+            if success3 and status3 == 200:
+                points_before = user_data.get('points', 0)
+                
+                # Now test redemption
+                success4, redemption_data, status4 = self.make_request('POST', f'reinforcements/{reinforcement_id}/redeem?user_id={user_id}')
+                
+                if success4 and status4 == 200:
+                    # Verify points were deducted
+                    success5, user_data_after, status5 = self.make_request('GET', f'users/{user_id}')
+                    
+                    if success5 and status5 == 200:
+                        points_after = user_data_after.get('points', 0)
+                        expected_points = points_before - reinforcement_data['cost']
+                        
+                        if points_after == expected_points:
+                            self.log_test("BETA: Points Deduction Mechanism", True, f"Successfully redeemed reinforcement. Points: {points_before} → {points_after}")
+                            return True
+                        else:
+                            self.log_test("BETA: Points Deduction Mechanism", False, f"Points not deducted correctly. Expected: {expected_points}, Got: {points_after}")
+                            return False
+                    else:
+                        self.log_test("BETA: Points Deduction Mechanism", False, "Failed to verify points after redemption")
+                        return False
+                else:
+                    self.log_test("BETA: Points Deduction Mechanism", False, f"Redemption failed - Status: {status4}, Data: {redemption_data}")
+                    return False
+            else:
+                self.log_test("BETA: Points Deduction Mechanism", False, "Failed to get user points before redemption")
+                return False
+        else:
+            self.log_test("BETA: Points Deduction Mechanism", False, "Failed to create test reinforcement")
+            return False
+
+    def test_negative_behavior_workflow(self):
+        """Test complete negative behavior → repair cycle → A-B-C context workflow - BETA INTEGRATION TEST"""
+        if len(self.test_users) < 2:
+            self.log_test("BETA: Negative Behavior Workflow", False, "Need paired users for this test")
+            return False
+            
+        user_id = self.test_users[0]['id']
+        partner_id = self.test_users[1]['id']
+        
+        # Step 1: Create negative behavior (should trigger repair cycle and notifications)
+        negative_behavior = {
+            "antecedent": "طلبت من شريكي المساعدة في تنظيف المطبخ",
+            "behavior": "تجاهلني وواصل مشاهدة التلفاز",
+            "consequence": "شعرت بالإحباط والغضب وقمت بالعمل وحدي",
+            "behavior_type": "negative"
+        }
+        
+        success, behavior_data, status = self.make_request('POST', f'behaviors?user_id={user_id}', negative_behavior)
+        
+        if success and status == 200 and 'id' in behavior_data:
+            behavior_id = behavior_data['id']
+            
+            # Step 2: Check if repair cycle was created
+            success2, repair_cycles, status2 = self.make_request('GET', f'repair-cycles/{partner_id}')
+            
+            if success2 and status2 == 200 and len(repair_cycles) > 0:
+                # Find the repair cycle for this behavior
+                relevant_cycle = None
+                for cycle in repair_cycles:
+                    if cycle.get('behavior_id') == behavior_id:
+                        relevant_cycle = cycle
+                        break
+                
+                if relevant_cycle:
+                    # Step 3: Check notifications were created with A-B-C context
+                    success3, notifications, status3 = self.make_request('GET', f'notifications/{partner_id}')
+                    
+                    if success3 and status3 == 200:
+                        # Look for the offender notification with A-B-C context
+                        abc_notification = None
+                        for notif in notifications:
+                            if (notif.get('behavior_id') == behavior_id and 
+                                notif.get('type') == 'negative_behavior_offender'):
+                                abc_notification = notif
+                                break
+                        
+                        if abc_notification:
+                            message = abc_notification.get('message', '')
+                            # Check if A-B-C context is included in the message
+                            if (negative_behavior['antecedent'] in message and 
+                                negative_behavior['behavior'] in message and 
+                                negative_behavior['consequence'] in message):
+                                self.log_test("BETA: Complete Negative Behavior Workflow", True, 
+                                            f"Full workflow working: behavior → repair cycle → A-B-C notification")
+                                return True
+                            else:
+                                self.log_test("BETA: Complete Negative Behavior Workflow", False, 
+                                            "A-B-C context not found in notification message")
+                                return False
+                        else:
+                            self.log_test("BETA: Complete Negative Behavior Workflow", False, 
+                                        "Offender notification with A-B-C context not found")
+                            return False
+                    else:
+                        self.log_test("BETA: Complete Negative Behavior Workflow", False, 
+                                    f"Failed to retrieve notifications - Status: {status3}")
+                        return False
+                else:
+                    self.log_test("BETA: Complete Negative Behavior Workflow", False, 
+                                "Repair cycle not found for the created behavior")
+                    return False
+            else:
+                self.log_test("BETA: Complete Negative Behavior Workflow", False, 
+                            f"Failed to retrieve repair cycles - Status: {status2}")
+                return False
+        else:
+            self.log_test("BETA: Complete Negative Behavior Workflow", False, 
+                        f"Failed to create negative behavior - Status: {status}")
+            return False
+
     def test_dashboard(self):
         """Test dashboard data retrieval"""
         if not self.test_users:
