@@ -40,13 +40,20 @@ const RepairCycle = ({ user, partner, onBack, onComplete }) => {
   const fetchBehaviorContext = async (behaviorId) => {
     try {
       // Get the specific behavior that triggered this repair cycle
-      const behaviorResponse = await axios.get(`${API}/behaviors/${user.id}/couple`);
-      const behavior = behaviorResponse.data.find(b => b.id === behaviorId);
-      if (behavior) {
-        setBehaviorContext(behavior);
-      }
+      const behaviorResponse = await axios.get(`${API}/behavior/${behaviorId}`);
+      setBehaviorContext(behaviorResponse.data);
     } catch (error) {
       console.error("Error fetching behavior context:", error);
+      // Fallback to searching in couple behaviors
+      try {
+        const behaviorResponse = await axios.get(`${API}/behaviors/${user.id}/couple`);
+        const behavior = behaviorResponse.data.find(b => b.id === behaviorId);
+        if (behavior) {
+          setBehaviorContext(behavior);
+        }
+      } catch (fallbackError) {
+        console.error("Error in fallback behavior fetch:", fallbackError);
+      }
     }
   };
 
