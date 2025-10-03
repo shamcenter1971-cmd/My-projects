@@ -578,176 +578,112 @@ const SkillsModule = ({ user, partner, onBack }) => {
         {/* Module Content */}
         {allModules.map((module) => (
           activeModule === module.id && (
-            <Card key={module.id} className="glass border-emerald-200">
-              <CardHeader>
-                <CardTitle className="arabic-title text-emerald-800 flex items-center gap-3">
-                  <span className="text-2xl">
+            <Card key={module.id} className="glass border-emerald-200 mb-8">
+              <CardHeader className="pb-6">
+                <CardTitle className="arabic-title text-emerald-800 flex items-center gap-4 text-2xl mb-4">
+                  <span className="text-3xl">
                     {module.id === 'timeout' && '🧘'}
                     {module.id === 'active_listening' && '👂'}
                     {module.id === 'expressing_needs' && '💬'}
                   </span>
-                  {module.title}
+                  <div className="flex-1">
+                    {module.title}
+                  </div>
                 </CardTitle>
-                <CardDescription className="arabic-text">
+                <CardDescription className="arabic-text text-base leading-relaxed mb-3">
                   {module.description}
                 </CardDescription>
                 {module.goal && (
-                  <p className="text-sm text-emerald-600 arabic-text font-medium">
-                    🎯 {module.goal}
-                  </p>
-                )}
-                
-                {/* Module Progress */}
-                <div className="mt-4 p-3 bg-emerald-50 border border-emerald-200 rounded-lg">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm font-medium arabic-text text-emerald-800">
-                      تقدم الوحدة:
-                    </span>
-                    <span className="text-sm arabic-text text-emerald-600">
-                      {module.sections.filter(section => 
-                        sectionProgress[`${module.id}_${section.id}`]
-                      ).length} / {module.sections.length}
-                    </span>
+                  <div className="skill-section bg-blue-50 border-l-4 border-blue-400">
+                    <p className="text-blue-700 arabic-text font-medium leading-relaxed">
+                      🎯 {module.goal}
+                    </p>
                   </div>
-                  <Progress 
-                    value={(module.sections.filter(section => 
-                      sectionProgress[`${module.id}_${section.id}`]
-                    ).length / module.sections.length) * 100} 
-                    className="h-2"
-                  />
-                </div>
+                )}
               </CardHeader>
-              <CardContent>
-                <Tabs defaultValue={module.sections[0].id} className="w-full">
-                  <TabsList className={`grid w-full grid-cols-${module.sections.length} mb-6`}>
-                    {module.sections.map((section, index) => {
-                      const isUnlocked = unlockedSections[module.id]?.[section.id];
-                      const isCompleted = sectionProgress[`${module.id}_${section.id}`];
-                      
-                      return (
+              <CardContent className="pt-0">
+                <Tabs defaultValue={module.sections[0].id} className="w-full tabs-container">
+                  <div className="overflow-x-auto mb-8">
+                    <TabsList className={`grid w-full grid-cols-${module.sections.length} gap-2`}>
+                      {module.sections.map((section, index) => (
                         <TabsTrigger 
                           key={section.id} 
                           value={section.id} 
-                          className={`arabic-text text-xs relative ${
-                            !isUnlocked ? 'opacity-50 cursor-not-allowed' : ''
-                          }`}
-                          disabled={!isUnlocked}
+                          className="tab-trigger arabic-text whitespace-normal text-center px-2 py-3"
+                          disabled={!unlockedSections[module.id]?.[section.id] && index > 0}
                         >
-                          <div className="flex items-center gap-1">
-                            {isCompleted && <span className="text-green-600">✅</span>}
-                            {!isUnlocked && <span className="text-gray-400">🔒</span>}
-                            <span>{section.title.split('(')[0].trim()}</span>
+                          <div className="flex items-center gap-2 justify-center">
+                            {unlockedSections[module.id]?.[section.id] ? (
+                              <span className="text-green-500">🔓</span>
+                            ) : (
+                              <span className="text-gray-400">🔒</span>
+                            )}
+                            <span className="text-xs leading-tight">
+                              {section.title.split('(')[0].trim()}
+                            </span>
                           </div>
                         </TabsTrigger>
-                      );
-                    })}
-                  </TabsList>
+                      ))}
+                    </TabsList>
+                  </div>
 
                   {module.sections.map((section) => (
-                    <TabsContent key={section.id} value={section.id} className="space-y-6">
-                      <div className="text-center mb-6">
-                        <h2 className="text-xl font-bold arabic-title text-emerald-800 mb-2">
-                          {section.title}
-                        </h2>
-                        <p className="text-emerald-600 arabic-text">
-                          {section.subtitle}
-                        </p>
+                    <TabsContent key={section.id} value={section.id} className="mt-0">
+                      <div className="skill-section bg-gradient-to-r from-emerald-50 to-teal-50 mb-8">
+                        <div className="text-center">
+                          <h2 className="text-2xl font-bold arabic-title text-emerald-800 mb-4 leading-relaxed">
+                            {section.title}
+                          </h2>
+                          <p className="text-emerald-600 arabic-text text-lg leading-relaxed">
+                            {section.subtitle}
+                          </p>
+                        </div>
                       </div>
 
-                      <div className="space-y-4">
+                      <div className="space-y-8">
                         {section.content.map((item, index) => (
-                          <div key={index}>
+                          <div key={index} className="no-overlap">
                             {renderContentItem(item, index)}
                           </div>
                         ))}
                       </div>
 
                       {/* Interactive Elements */}
-                      <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                        {/* Section Progress Indicator */}
-                        <div className="flex items-center justify-between mb-4">
-                          <span className="text-sm font-medium arabic-text text-blue-800">
-                            حالة القسم:
-                          </span>
-                          {sectionProgress[`${module.id}_${section.id}`] ? (
-                            <Badge className="bg-green-100 text-green-800 arabic-text">
-                              ✅ مكتمل
-                            </Badge>
+                      <div className="skill-section bg-amber-50 border border-amber-200 mt-8">
+                        <div className="text-center">
+                          <h3 className="text-lg font-bold arabic-title text-amber-800 mb-4">
+                            تفاعل مطلوب لإكمال هذا القسم
+                          </h3>
+                          {!sectionProgress[`${module.id}_${section.id}`] ? (
+                            <Button
+                              onClick={() => handleSectionInteraction(module.id, section.id, 'interaction')}
+                              className="btn-primary arabic-text px-8 py-3"
+                              data-testid={`interact-${section.id}`}
+                            >
+                              ✅ فهمت محتوى هذا القسم
+                            </Button>
                           ) : (
-                            <Badge variant="outline" className="arabic-text">
-                              ⏳ في الانتظار
-                            </Badge>
+                            <div className="flex items-center justify-center gap-3 text-green-600">
+                              <span className="text-2xl">✅</span>
+                              <span className="arabic-text font-medium text-lg">تم إكمال هذا القسم</span>
+                            </div>
                           )}
                         </div>
-
-                        {/* Commitment Phrase Input for specific sections */}
-                        {(section.id === 'how' || section.id === 'specific_requests' || section.id === 'scripts') && (
-                          <div className="mb-4">
-                            <h4 className="font-medium arabic-text text-blue-800 mb-2">
-                              💭 اكتب عبارة الالتزام الشخصية:
-                            </h4>
-                            <p className="text-sm arabic-text text-blue-600 mb-3">
-                              اكتب بكلماتك الخاصة كيف ستطبق هذه المهارة في حياتك اليومية
-                            </p>
-                            {commitmentPhrases[`${module.id}_commitment`] ? (
-                              <div className="p-3 bg-green-50 border border-green-200 rounded-lg">
-                                <p className="arabic-text text-green-800 font-medium">
-                                  عبارة الالتزام المحفوظة:
-                                </p>
-                                <p className="arabic-text text-green-700 mt-1">
-                                  "{commitmentPhrases[`${module.id}_commitment`]}"
-                                </p>
-                              </div>
-                            ) : (
-                              <div className="space-y-3">
-                                <textarea
-                                  value={currentCommitmentSection === `${module.id}_${section.id}` ? currentCommitmentPhrase : ''}
-                                  onChange={(e) => {
-                                    setCurrentCommitmentPhrase(e.target.value);
-                                    setCurrentCommitmentSection(`${module.id}_${section.id}`);
-                                  }}
-                                  placeholder="مثال: سأستخدم عبارة 'أحتاج إلى استراحة' بدلاً من الصراخ عندما أشعر بالغضب..."
-                                  className="w-full p-3 border border-blue-300 rounded-lg arabic-text"
-                                  rows="3"
-                                />
-                                <Button
-                                  onClick={() => handleCommitmentPhrase(module.id, 'commitment', currentCommitmentPhrase)}
-                                  disabled={!currentCommitmentPhrase.trim() || currentCommitmentSection !== `${module.id}_${section.id}`}
-                                  className="w-full arabic-text"
-                                  variant="outline"
-                                >
-                                  💾 حفظ عبارة الالتزام
-                                </Button>
-                              </div>
-                            )}
-                          </div>
-                        )}
-
-                        {/* Section Interaction Button */}
-                        {!sectionProgress[`${module.id}_${section.id}`] && (
-                          <Button
-                            onClick={() => handleSectionInteraction(module.id, section.id, 'read')}
-                            className="w-full arabic-text"
-                            variant="default"
-                          >
-                            ✅ أكملت قراءة هذا القسم
-                          </Button>
-                        )}
                       </div>
 
-                      {/* Module Completion Button - Only show on last section */}
+                      {/* Completion Button - only show on last section */}
                       {section.id === module.sections[module.sections.length - 1].id && (
-                        <div className="text-center pt-6 border-t border-emerald-200">
+                        <div className="skill-section bg-green-50 border border-green-200 text-center mt-8">
                           <Button
                             onClick={() => markModuleComplete(module.id)}
                             disabled={completedModules.has(module.id)}
-                            className="btn-primary arabic-text px-8"
+                            className="btn-primary arabic-text px-12 py-4 text-lg"
                             data-testid="complete-module-button"
                           >
                             {completedModules.has(module.id) ? "تم الإكمال ✅" : "أكملت هذه المهارة (+3 نقاط)"}
                           </Button>
-                          <p className="text-xs text-emerald-600 arabic-text mt-2">
-                            ستحصل على 3 نقاط عند إكمال هذه الوحدة
+                          <p className="text-sm text-green-600 arabic-text mt-3 leading-relaxed">
+                            ستحصل على 3 نقاط عند إكمال جميع الأقسام التفاعلية
                           </p>
                         </div>
                       )}
