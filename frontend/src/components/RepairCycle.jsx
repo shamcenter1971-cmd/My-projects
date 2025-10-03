@@ -12,6 +12,7 @@ const API = `${BACKEND_URL}/api`;
 
 const RepairCycle = ({ user, partner, onBack, onComplete }) => {
   const [activeRepairCycle, setActiveRepairCycle] = useState(null);
+  const [behaviorContext, setBehaviorContext] = useState(null); // A-B-C context
   const [loading, setLoading] = useState(true);
   const [currentStep, setCurrentStep] = useState(0);
 
