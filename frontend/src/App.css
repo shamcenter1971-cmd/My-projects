@@ -671,3 +671,48 @@ button span,
   direction: rtl !important;
   text-align: right !important;
 }
+
+/* CRITICAL BETA FIX: Point reward buttons text integrity */
+.btn-primary,
+.btn-secondary,
+button[data-testid*="award-"],
+button:has-text("نقطة") {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  white-space: nowrap !important;
+  text-align: center !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  min-width: fit-content !important;
+  padding: 0.75rem 1.5rem !important;
+  font-size: 0.95rem !important;
+  line-height: 1.2 !important;
+  word-break: keep-all !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+}
+
+/* CRITICAL: Force point award buttons to maintain text integrity */
+.grid button,
+.grid .btn-primary,
+.grid .btn-secondary {
+  min-width: 120px !important;
+  max-width: 200px !important;
+  height: auto !important;
+  min-height: 3rem !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
+}
+
+/* CRITICAL: Arabic numerals and text in buttons */
+button *,
+.btn-primary *,
+.btn-secondary * {
+  white-space: nowrap !important;
+  word-break: keep-all !important;
+  display: inline !important;
+}
