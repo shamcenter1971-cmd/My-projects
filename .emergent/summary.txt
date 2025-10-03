@@ -1,0 +1,78 @@
+<analysis>
+The AI engineer successfully built the Mithaq app, a full-stack Arabic behavioral couples counseling tool, from initial requirements. Key development phases included setting up the FastAPI backend and React frontend with MongoDB. Initial work focused on core features like the A-B-C Behavioral Analyzer, Reinforcement Bank, and couple pairing, ensuring full Arabic localization. Critical bug fixes addressed a missing login feature, A-B-C log synchronization between partners, and severe JSON serialization errors in the backend, which were crucial for data stability.
+
+The engineer then implemented therapeutic enhancements: a Time-Out and Self-Soothing Skill module, role-based notifications for negative behaviors, and the complex Immediate Repair Cycle logic, integrating two additional skill modules. The process involved extensive backend API development, frontend component creation, and UI/UX adjustments, including addressing persistent RTL styling and text overlap issues for a professional Arabic interface. The current state involves refining the A-B-C context in the repair pop-up and preparing for the positive rewards system.
+</analysis>
+
+<product_requirements>
+The Mithaq app is an Arabic-localized digital marriage counseling tool based on CBCT and ABA principles. It targets Arabic-speaking couples to improve communication.
+**Core Features:**
+*   **Synchronized Accounts:** Securely links two user accounts with a pairing code; data is viewable by both.
+*   **A-B-C Behavioral Analyzer:** Users log Antecedent (what happened before tension), Behavior (negative action), and Consequence (immediate result). The system identifies recurring A-B-C chains.
+*   **Positive Reinforcement & Skills System:**
+    *   **Reinforcement Bank:** Private list of personalized reinforcers (e.g., Five minutes uninterrupted listening), visible only to the partner.
+    *   **Token Economy System:** Partners award Quick Positive Points for desired behaviors. Points can redeem reinforcers.
+*   **Educational Content (Skills Training):** Micro-learning modules (e.g., Time-Out and Self-Soothing, Active Listening, Expressing Needs). Behavioral homework prompts real-life application.
+*   **Immediate Repair Cycle:** Upon logging a negative behavior, the offender completes a 3-step pop-up (acknowledge, transfer points, complete skill section), and the recipient receives confirmation and mandatory skill learning.
+*   **Role-Based Notifications:** Differentiated notifications are sent to the offender and recipient after a negative A-B-C log, directing them to relevant skills.
+*   **Arabic UI/UX:** Full localization, RTL layout, proper typography, and cultural adaptations.
+*   **Data Security:** End-to-end encryption and high standards for sensitive marital data.
+</product_requirements>
+
+<key_technical_concepts>
+-   **Full-stack Architecture:** React frontend, FastAPI backend, MongoDB database.
+-   **Arabic Localization (RTL):** UI/UX designed for right-to-left text.
+-   **Shadcn UI & Tailwind CSS:** Component library and utility-first CSS for UI.
+-   **Pydantic:** Data validation and settings management in FastAPI.
+-   **UUIDs:** Used for MongoDB document IDs to ensure JSON serializability.
+-   **Asynchronous Programming:** FastAPI utilizes  for I/O operations.
+-   **Environment Variables:** For sensitive data like  and .
+</key_technical_concepts>
+
+<code_architecture>
+
+
+-   **/app/backend/server.py**: Main FastAPI application.
+    -   **Summary:** Defines API endpoints for user authentication (registration, login), couple pairing, A-B-C behavior logging (positive/negative), reinforcement bank management, skill module completion, and handling the immediate repair cycle. It interacts with MongoDB.
+    -   **Changes:** Added  endpoint. Implemented  and  for synchronized data. Added notification models and endpoints. Integrated repair cycle models and endpoints. Enhanced JSON serialization and error handling for MongoDB operations.
+-   **/app/frontend/src/App.js**: Main React application component.
+    -   **Summary:** Sets up React Router for navigation, defining routes for authentication, dashboard, skills, and the repair cycle.
+    -   **Changes:** Added routes for , . Updated route names to reflect أدوات المساعدة وحل الخلافات.
+-   **/app/frontend/src/App.css**: Global CSS styles.
+    -   **Summary:** Contains global styles and custom Tailwind CSS classes.
+    -   **Changes:** Major updates for RTL layout, improved text spacing, font sizes, line heights, and container widths to fix visual overlap.
+-   **/app/frontend/src/components/AuthPage.jsx**: Authentication component.
+    -   **Summary:** Handles user registration.
+    -   **Changes:** Implemented toggle functionality for both إنشاء حساب جديد (Create New Account) and تسجيل الدخول (Login), connecting to backend API.
+-   **/app/frontend/src/components/BehaviorAnalyzer.jsx**: A-B-C logging and display.
+    -   **Summary:** Allows users to log antecedents, behaviors, and consequences.
+    -   **Changes:** Updated to fetch and display behaviors for *both* partners using new couple-specific backend endpoints. Modified UI to show which partner logged each behavior.
+-   **/app/frontend/src/components/Dashboard.jsx**: Main user dashboard.
+    -   **Summary:** Displays an overview, including recent behaviors and access to other features.
+    -   **Changes:** Updated to display notifications, a card for the أدوات المساعدة وحل الخلافات (Skills/Help Tools) section, and now shows couple behaviors. Adjusted for RTL styling.
+-   **/app/frontend/src/components/SkillsModule.jsx**: Educational skill modules.
+    -   **Summary:** Presents therapeutic skill content.
+    -   **Changes:** Integrated Time-Out and Self-Soothing, Active Listening, and Expressing Needs modules. Implemented interactive sections, progress tracking, and commitment phrase saving logic. Adjusted for RTL styling and mobile responsiveness.
+-   **/app/frontend/src/components/NotificationCenter.jsx**: Displays user notifications.
+    -   **Summary:** New component to show role-based notifications.
+    -   **Changes:** Created to display tailored notifications for offenders and recipients after a negative behavior.
+-   **/app/frontend/src/components/RepairCycle.jsx**: Immediate Repair Cycle interface.
+    -   **Summary:** New component to handle the mandatory 3-step repair process.
+    -   **Changes:** Created to prompt offenders to acknowledge, pay points, and complete a skill. Updated to display the full A-B-C context of the logged negative behavior.
+</code_architecture>
+
+<pending_tasks>
+-   Implement the Positive Rewards System (activate points deduction for specific rewards).
+-   Perform final UI Cleanup (fix visual overlap of the notification counter on the Dashboard).
+-   Confirm the Recommendation Algorithm for skill prioritization based on repetitive A-B-C patterns is fully implemented and working.
+</pending_tasks>
+
+<current_work>
+The AI engineer is currently addressing the user's latest critical logic and UI tasks to prepare for the Beta build. Specifically, the immediate focus is on:
+
+1.  **Injecting A-B-C Context into Repair Pop-up**: The engineer has initiated modifications to the backend's repair cycle creation to ensure the تنبيه سلوك سلبي! (Negative Behavior Alert!) pop-up displays the specific Antecedent (A), Behavior (B), and Consequence (C) details of the logged behavior. This is crucial for giving the offender the necessary context to understand and address their actions. This involves fetching the complete behavior details and passing them into the notification/repair object.
+</current_work>
+
+<optional_next_step>
+Continue modifying the backend to inject full A-B-C context into the repair cycle creation and subsequent notifications.
+</optional_next_step>
