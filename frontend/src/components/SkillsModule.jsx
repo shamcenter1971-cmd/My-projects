@@ -33,10 +33,130 @@ const SkillsModule = ({ user, partner, onBack }) => {
   };
 
   const getModuleTitle = (moduleId) => {
-    const titles = {
-      "timeout": "مهارة الاستراحة والتهدئة الذاتية"
-    };
-    return titles[moduleId] || moduleId;
+    const module = allModules.find(m => m.id === moduleId);
+    return module ? module.title : moduleId;
+  };
+
+  const renderContentItem = (item, index) => {
+    switch (item.type) {
+      case "category":
+        return (
+          <Card className="border-emerald-200">
+            <CardContent className="p-4">
+              <h4 className="font-semibold arabic-text text-emerald-800 mb-3">
+                {item.title}
+              </h4>
+              <ul className="space-y-2">
+                {item.items.map((listItem, itemIndex) => (
+                  <li key={itemIndex} className="flex items-center gap-2 arabic-text">
+                    <span className="w-2 h-2 bg-emerald-500 rounded-full"></span>
+                    {listItem}
+                  </li>
+                ))}
+              </ul>
+            </CardContent>
+          </Card>
+        );
+
+      case "script":
+        return (
+          <Card className="border-emerald-200 bg-emerald-50">
+            <CardContent className="p-4">
+              <h4 className="font-semibold arabic-text text-emerald-800 mb-2">
+                {item.title}
+              </h4>
+              <div className="p-3 bg-white rounded-lg border-r-4 border-emerald-500">
+                <p className="arabic-text font-medium text-emerald-700">
+                  "{item.text}"
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        );
+
+      case "technique":
+        return (
+          <Card className="border-emerald-200">
+            <CardContent className="p-4">
+              <div className="flex items-center gap-2 mb-3">
+                <span className="w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600 font-bold">
+                  {index + 1}
+                </span>
+                <div>
+                  <h4 className="font-semibold arabic-text text-emerald-800">
+                    {item.title}
+                  </h4>
+                  <p className="text-sm text-emerald-600 arabic-text">
+                    {item.description}
+                  </p>
+                </div>
+              </div>
+              <div className="mr-10 space-y-2">
+                {item.steps.map((step, stepIndex) => (
+                  <div key={stepIndex} className="flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full"></span>
+                    <span className="arabic-text text-sm">{step}</span>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        );
+
+      case "comparison":
+        return (
+          <Card className="border-emerald-200">
+            <CardContent className="p-4">
+              <h4 className="font-semibold arabic-text text-emerald-800 mb-3">
+                {item.title}
+              </h4>
+              <div className="grid md:grid-cols-2 gap-4">
+                <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="text-red-500">❌</span>
+                    <span className="font-medium arabic-text text-red-700">تجنب:</span>
+                  </div>
+                  <p className="arabic-text text-red-600">"{item.wrong}"</p>
+                </div>
+                <div className="p-3 bg-green-50 border border-green-200 rounded-lg">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="text-green-500">✅</span>
+                    <span className="font-medium arabic-text text-green-700">بدلاً من ذلك:</span>
+                  </div>
+                  <p className="arabic-text text-green-600">"{item.right}"</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        );
+
+      case "challenge":
+        return (
+          <Card className="border-amber-200 bg-amber-50">
+            <CardContent className="p-4">
+              <h4 className="font-semibold arabic-text text-amber-800 mb-2">
+                {item.title}
+              </h4>
+              <p className="arabic-text text-amber-700 mb-3">
+                {item.description}
+              </p>
+              <div className="space-y-2">
+                {item.steps.map((step, stepIndex) => (
+                  <div key={stepIndex} className="flex items-center gap-2">
+                    <span className="w-6 h-6 bg-amber-100 rounded-full flex items-center justify-center text-amber-600 font-bold text-xs">
+                      {stepIndex + 1}
+                    </span>
+                    <span className="arabic-text text-sm text-amber-700">{step}</span>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        );
+
+      default:
+        return null;
+    }
   };
 
   const timeoutModule = {
