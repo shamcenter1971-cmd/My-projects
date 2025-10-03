@@ -573,21 +573,21 @@ async def perform_repair_action(cycle_id: str, action: RepairAction, user_id: st
             {"$set": {"compensation_paid": True, "status": "payment_completed"}}
         )
         
-        # Send confirmation to recipient
-        recipient_confirmation = {
-            "id": str(uuid.uuid4()),
-            "user_id": repair_cycle["recipient_id"],
-            "type": "repair_confirmation",
-            "title": "تم الإقرار والتعويض",
-            "message": "شريكك أقرّ بالملاحظة وأرسل لك 3 نقاط تعويض كبادرة اعتذار، وبدأ التدريب على مهارة الاستراحة والتهدئة الذاتية.",
-            "action_url": "/help-tools",
-            "priority_skills": ["active_listening", "expressing_needs"],
-            "behavior_id": repair_cycle["behavior_id"],
-            "is_read": False,
-            "created_at": datetime.now(timezone.utc).isoformat()
-        }
+        # Send confirmation to recipient using proper Notification model
+        recipient_confirmation = Notification(
+            user_id=repair_cycle["recipient_id"],
+            type="repair_confirmation",
+            title="تم الإقرار والتعويض",
+            message="شريكك أقرّ بالملاحظة وأرسل لك 3 نقاط تعويض كبادرة اعتذار، وبدأ التدريب على مهارة الاستراحة والتهدئة الذاتية.",
+            action_url="/help-tools",
+            priority_skills=["active_listening", "expressing_needs"],
+            behavior_id=repair_cycle["behavior_id"],
+            is_read=False
+        )
         
-        await db.notifications.insert_one(recipient_confirmation)
+        # Properly serialize and insert
+        confirmation_prepared = prepare_for_mongo(recipient_confirmation.dict())
+        await db.notifications.insert_one(confirmation_prepared)
         
         return {"message": "Compensation paid", "next_step": "complete_skill"}
         
