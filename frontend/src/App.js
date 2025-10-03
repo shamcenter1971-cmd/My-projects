@@ -10,6 +10,7 @@ import BehaviorAnalyzer from "./components/BehaviorAnalyzer";
 import ReinforcementBank from "./components/ReinforcementBank";
 import PairingPage from "./components/PairingPage";
 import SkillsModule from "./components/SkillsModule";
+import RepairCycle from "./components/RepairCycle";
 import { Toaster } from "@/components/ui/sonner";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
