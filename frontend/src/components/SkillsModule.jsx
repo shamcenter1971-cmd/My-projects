@@ -578,47 +578,47 @@ const SkillsModule = ({ user, partner, onBack }) => {
         {/* Module Content */}
         {allModules.map((module) => (
           activeModule === module.id && (
-            <Card key={module.id} className="glass border-emerald-200 mb-8">
-              <CardHeader className="pb-6">
-                <CardTitle className="arabic-title text-emerald-800 flex items-center gap-4 text-2xl mb-4">
-                  <span className="text-3xl">
+            <Card key={module.id} className="glass border-emerald-200 mb-6 sm:mb-8 w-full">
+              <CardHeader className="pb-4 sm:pb-6 px-3 sm:px-6">
+                <CardTitle className="arabic-title text-emerald-800 flex flex-col sm:flex-row items-center gap-3 sm:gap-4 text-xl sm:text-2xl mb-3 sm:mb-4">
+                  <span className="text-2xl sm:text-3xl">
                     {module.id === 'timeout' && '🧘'}
                     {module.id === 'active_listening' && '👂'}
                     {module.id === 'expressing_needs' && '💬'}
                   </span>
-                  <div className="flex-1">
+                  <div className="flex-1 text-center sm:text-right">
                     {module.title}
                   </div>
                 </CardTitle>
-                <CardDescription className="arabic-text text-base leading-relaxed mb-3">
+                <CardDescription className="arabic-text text-sm sm:text-base leading-relaxed mb-3 text-center sm:text-right px-1">
                   {module.description}
                 </CardDescription>
                 {module.goal && (
-                  <div className="skill-section bg-blue-50 border-l-4 border-blue-400">
-                    <p className="text-blue-700 arabic-text font-medium leading-relaxed">
+                  <div className="skill-section bg-blue-50 border-l-4 border-blue-400 w-full">
+                    <p className="text-blue-700 arabic-text font-medium leading-relaxed text-sm sm:text-base text-center sm:text-right">
                       🎯 {module.goal}
                     </p>
                   </div>
                 )}
               </CardHeader>
-              <CardContent className="pt-0">
+              <CardContent className="pt-0 px-3 sm:px-6">
                 <Tabs defaultValue={module.sections[0].id} className="w-full tabs-container">
-                  <div className="overflow-x-auto mb-8">
-                    <TabsList className={`grid w-full grid-cols-${module.sections.length} gap-2`}>
+                  <div className="overflow-x-auto mb-6 sm:mb-8">
+                    <TabsList className="w-full flex flex-wrap sm:grid gap-1 sm:gap-2" style={{gridTemplateColumns: `repeat(${module.sections.length}, 1fr)`}}>
                       {module.sections.map((section, index) => (
                         <TabsTrigger 
                           key={section.id} 
                           value={section.id} 
-                          className="tab-trigger arabic-text whitespace-normal text-center px-2 py-3"
+                          className="tab-trigger arabic-text text-center px-2 py-2 sm:px-2 sm:py-3 flex-shrink-0 min-w-0"
                           disabled={!unlockedSections[module.id]?.[section.id] && index > 0}
                         >
-                          <div className="flex items-center gap-2 justify-center">
+                          <div className="flex flex-col items-center justify-center gap-1 sm:gap-2">
                             {unlockedSections[module.id]?.[section.id] ? (
-                              <span className="text-green-500">🔓</span>
+                              <span className="text-green-500 text-sm sm:text-base">🔓</span>
                             ) : (
-                              <span className="text-gray-400">🔒</span>
+                              <span className="text-gray-400 text-sm sm:text-base">🔒</span>
                             )}
-                            <span className="text-xs leading-tight">
+                            <span className="text-xs leading-tight text-center break-words">
                               {section.title.split('(')[0].trim()}
                             </span>
                           </div>
@@ -629,43 +629,43 @@ const SkillsModule = ({ user, partner, onBack }) => {
 
                   {module.sections.map((section) => (
                     <TabsContent key={section.id} value={section.id} className="mt-0">
-                      <div className="skill-section bg-gradient-to-r from-emerald-50 to-teal-50 mb-8">
-                        <div className="text-center">
-                          <h2 className="text-2xl font-bold arabic-title text-emerald-800 mb-4 leading-relaxed">
+                      <div className="skill-section bg-gradient-to-r from-emerald-50 to-teal-50 mb-6 sm:mb-8 w-full">
+                        <div className="text-center w-full">
+                          <h2 className="text-xl sm:text-2xl font-bold arabic-title text-emerald-800 mb-3 sm:mb-4 leading-relaxed">
                             {section.title}
                           </h2>
-                          <p className="text-emerald-600 arabic-text text-lg leading-relaxed">
+                          <p className="text-emerald-600 arabic-text text-base sm:text-lg leading-relaxed px-2">
                             {section.subtitle}
                           </p>
                         </div>
                       </div>
 
-                      <div className="space-y-8">
+                      <div className="space-y-6 sm:space-y-8 w-full">
                         {section.content.map((item, index) => (
-                          <div key={index} className="no-overlap">
+                          <div key={index} className="no-overlap w-full">
                             {renderContentItem(item, index)}
                           </div>
                         ))}
                       </div>
 
                       {/* Interactive Elements */}
-                      <div className="skill-section bg-amber-50 border border-amber-200 mt-8">
-                        <div className="text-center">
-                          <h3 className="text-lg font-bold arabic-title text-amber-800 mb-4">
+                      <div className="skill-section bg-amber-50 border border-amber-200 mt-6 sm:mt-8 w-full">
+                        <div className="text-center w-full">
+                          <h3 className="text-base sm:text-lg font-bold arabic-title text-amber-800 mb-3 sm:mb-4">
                             تفاعل مطلوب لإكمال هذا القسم
                           </h3>
                           {!sectionProgress[`${module.id}_${section.id}`] ? (
                             <Button
                               onClick={() => handleSectionInteraction(module.id, section.id, 'interaction')}
-                              className="btn-primary arabic-text px-8 py-3"
+                              className="btn-primary arabic-text px-6 sm:px-8 py-2 sm:py-3 w-full sm:w-auto"
                               data-testid={`interact-${section.id}`}
                             >
                               ✅ فهمت محتوى هذا القسم
                             </Button>
                           ) : (
-                            <div className="flex items-center justify-center gap-3 text-green-600">
-                              <span className="text-2xl">✅</span>
-                              <span className="arabic-text font-medium text-lg">تم إكمال هذا القسم</span>
+                            <div className="flex items-center justify-center gap-2 sm:gap-3 text-green-600 w-full">
+                              <span className="text-xl sm:text-2xl">✅</span>
+                              <span className="arabic-text font-medium text-base sm:text-lg">تم إكمال هذا القسم</span>
                             </div>
                           )}
                         </div>
@@ -673,16 +673,16 @@ const SkillsModule = ({ user, partner, onBack }) => {
 
                       {/* Completion Button - only show on last section */}
                       {section.id === module.sections[module.sections.length - 1].id && (
-                        <div className="skill-section bg-green-50 border border-green-200 text-center mt-8">
+                        <div className="skill-section bg-green-50 border border-green-200 text-center mt-6 sm:mt-8 w-full">
                           <Button
                             onClick={() => markModuleComplete(module.id)}
                             disabled={completedModules.has(module.id)}
-                            className="btn-primary arabic-text px-12 py-4 text-lg"
+                            className="btn-primary arabic-text px-8 sm:px-12 py-3 sm:py-4 text-base sm:text-lg w-full sm:w-auto"
                             data-testid="complete-module-button"
                           >
                             {completedModules.has(module.id) ? "تم الإكمال ✅" : "أكملت هذه المهارة (+3 نقاط)"}
                           </Button>
-                          <p className="text-sm text-green-600 arabic-text mt-3 leading-relaxed">
+                          <p className="text-xs sm:text-sm text-green-600 arabic-text mt-2 sm:mt-3 leading-relaxed px-2">
                             ستحصل على 3 نقاط عند إكمال جميع الأقسام التفاعلية
                           </p>
                         </div>
