@@ -195,8 +195,10 @@ metadata:
 
 test_plan:
   current_focus:
+    - "A-B-C Context Injection - Repair Cycle Notifications"
     - "Expanded Positive Rewards System Backend"
-    - "Expanded Rewards Interface"
+    - "Reinforcement Redemption Point Deduction"
+    - "A-B-C Context Display in Repair Pop-up"
     - "Dashboard Notification Counter Overlap Fix"
   stuck_tasks: []
   test_all: false
