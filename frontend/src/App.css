@@ -514,6 +514,25 @@ body {
     text-align: center !important;
     word-wrap: break-word !important;
   }
+  
+  /* CRITICAL: Skills module container width fix */
+  .skills-module-container {
+    width: 98% !important;
+    max-width: 100% !important;
+    padding: 0.5rem !important;
+  }
+  
+  /* CRITICAL: Fix for missing button text/labels */
+  button, .btn-primary, .btn-secondary {
+    font-family: 'Cairo', sans-serif !important;
+    font-weight: 500 !important;
+    white-space: normal !important;
+    word-wrap: break-word !important;
+    text-overflow: clip !important;
+    overflow: visible !important;
+    min-height: 2.5rem !important;
+    line-height: 1.4 !important;
+  }
 }
 
 /* Even smaller screens (very narrow phones) */
