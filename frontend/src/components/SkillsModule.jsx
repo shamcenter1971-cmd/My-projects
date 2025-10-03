@@ -598,11 +598,27 @@ const SkillsModule = ({ user, partner, onBack }) => {
               <CardContent>
                 <Tabs defaultValue={module.sections[0].id} className="w-full">
                   <TabsList className={`grid w-full grid-cols-${module.sections.length} mb-6`}>
-                    {module.sections.map((section) => (
-                      <TabsTrigger key={section.id} value={section.id} className="arabic-text text-xs">
-                        {section.title.split('(')[0].trim()}
-                      </TabsTrigger>
-                    ))}
+                    {module.sections.map((section, index) => {
+                      const isUnlocked = unlockedSections[module.id]?.[section.id];
+                      const isCompleted = sectionProgress[`${module.id}_${section.id}`];
+                      
+                      return (
+                        <TabsTrigger 
+                          key={section.id} 
+                          value={section.id} 
+                          className={`arabic-text text-xs relative ${
+                            !isUnlocked ? 'opacity-50 cursor-not-allowed' : ''
+                          }`}
+                          disabled={!isUnlocked}
+                        >
+                          <div className="flex items-center gap-1">
+                            {isCompleted && <span className="text-green-600">✅</span>}
+                            {!isUnlocked && <span className="text-gray-400">🔒</span>}
+                            <span>{section.title.split('(')[0].trim()}</span>
+                          </div>
+                        </TabsTrigger>
+                      );
+                    })}
                   </TabsList>
 
                   {module.sections.map((section) => (
