@@ -254,67 +254,78 @@ async def pair_with_partner(user_id: str, pair_request: PairRequest):
 # A-B-C Behavior Analysis Routes
 @api_router.post("/behaviors", response_model=BehaviorEntry)
 async def create_behavior_entry(behavior_data: BehaviorCreate, user_id: str):
-    behavior_dict = behavior_data.dict()
-    behavior_dict["user_id"] = user_id
-    behavior_obj = BehaviorEntry(**behavior_dict)
-    
-    prepared_data = prepare_for_mongo(behavior_obj.dict())
-    await db.behaviors.insert_one(prepared_data)
-    
-    # Award point for positive behavior
-    if behavior_data.behavior_type == "positive":
-        await db.users.update_one({"id": user_id}, {"$inc": {"points": 1}})
-    
-    # CRITICAL: Role-based notification system for negative behaviors
-    if behavior_data.behavior_type == "negative":
-        # Get user info to find partner
-        user = await db.users.find_one({"id": user_id})
-        if user and user.get("partner_id"):
-            partner_id = user["partner_id"]
-            
-            # Initialize Immediate Repair Cycle
-            repair_cycle = RepairCycle(
-                behavior_id=behavior_obj.id,
-                offender_id=partner_id,  # Partner whose behavior was logged
-                recipient_id=user_id,    # User who logged the behavior
-                status="pending"
-            )
-            
-            prepared_repair = prepare_for_mongo(repair_cycle.dict())
-            await db.repair_cycles.insert_one(prepared_repair)
-            
-            # 1. Notification for the user who submitted the log (recipient of negative behavior)
-            recipient_notification = Notification(
-                user_id=user_id,
-                type="negative_behavior_recipient",
-                title="تم تسجيل سلوك أثّر عليك",
-                message="تم تسجيل سلوك أثّر عليك. انتقل الآن إلى أدوات المساعدة وحل الخلافات لمعرفة مهارات مواجهة هذا السلوك والحفاظ على حدودك العاطفية.",
-                action_url="/help-tools",
-                priority_skills=["active_listening", "expressing_needs", "boundary_setting"],
-                behavior_id=behavior_obj.id,
-                is_read=False
-            )
-            
-            # 2. CRITICAL: Mandatory repair cycle notification for offender
-            offender_notification = Notification(
-                user_id=partner_id,
-                type="negative_behavior_offender",
-                title="تنبيه سلوك سلبي! - إصلاح فوري مطلوب",
-                message="تنبيه سلوك سلبي! تم تسجيل سلوك منتقد من شريكك. يجب إكمال دورة الإصلاح الفورية: (1) الإقرار بالملاحظة (2) إرسال 3 نقاط تعويض (3) إكمال وحدة تعليمية.",
-                action_url="/repair-cycle",
-                priority_skills=["timeout", "self_soothing", "anger_management"],
-                behavior_id=behavior_obj.id,
-                is_read=False
-            )
-            
-            # Store notifications in database using proper models
-            recipient_prepared = prepare_for_mongo(recipient_notification.dict())
-            offender_prepared = prepare_for_mongo(offender_notification.dict())
-            
-            await db.notifications.insert_one(recipient_prepared)
-            await db.notifications.insert_one(offender_prepared)
-    
-    return behavior_obj
+    try:
+        behavior_dict = behavior_data.dict()
+        behavior_dict["user_id"] = user_id
+        behavior_obj = BehaviorEntry(**behavior_dict)
+        
+        # Prepare data with comprehensive JSON serialization
+        prepared_data = prepare_for_mongo(behavior_obj.dict())
+        
+        # Insert behavior entry
+        result = await db.behaviors.insert_one(prepared_data)
+        
+        # Award point for positive behavior
+        if behavior_data.behavior_type == "positive":
+            await db.users.update_one({"id": user_id}, {"$inc": {"points": 1}})
+        
+        # CRITICAL: Role-based notification system for negative behaviors
+        if behavior_data.behavior_type == "negative":
+            # Get user info to find partner
+            user = await db.users.find_one({"id": user_id})
+            if user and user.get("partner_id"):
+                partner_id = user["partner_id"]
+                
+                # Initialize Immediate Repair Cycle
+                repair_cycle = RepairCycle(
+                    behavior_id=behavior_obj.id,
+                    offender_id=partner_id,  # Partner whose behavior was logged
+                    recipient_id=user_id,    # User who logged the behavior
+                    status="pending"
+                )
+                
+                # Prepare repair cycle data with proper serialization
+                prepared_repair = prepare_for_mongo(repair_cycle.dict())
+                await db.repair_cycles.insert_one(prepared_repair)
+                
+                # 1. Notification for the user who submitted the log (recipient of negative behavior)
+                recipient_notification = Notification(
+                    user_id=user_id,
+                    type="negative_behavior_recipient",
+                    title="تم تسجيل سلوك أثّر عليك",
+                    message="تم تسجيل سلوك أثّر عليك. انتقل الآن إلى أدوات المساعدة وحل الخلافات لمعرفة مهارات مواجهة هذا السلوك والحفاظ على حدودك العاطفية.",
+                    action_url="/help-tools",
+                    priority_skills=["active_listening", "expressing_needs", "boundary_setting"],
+                    behavior_id=behavior_obj.id,
+                    is_read=False
+                )
+                
+                # 2. CRITICAL: Mandatory repair cycle notification for offender
+                offender_notification = Notification(
+                    user_id=partner_id,
+                    type="negative_behavior_offender",
+                    title="تنبيه سلوك سلبي! - إصلاح فوري مطلوب",
+                    message="تنبيه سلوك سلبي! تم تسجيل سلوك منتقد من شريكك. يجب إكمال دورة الإصلاح الفورية: (1) الإقرار بالملاحظة (2) إرسال 3 نقاط تعويض (3) إكمال وحدة تعليمية.",
+                    action_url="/repair-cycle",
+                    priority_skills=["timeout", "self_soothing", "anger_management"],
+                    behavior_id=behavior_obj.id,
+                    is_read=False
+                )
+                
+                # Store notifications in database using proper models and serialization
+                recipient_prepared = prepare_for_mongo(recipient_notification.dict())
+                offender_prepared = prepare_for_mongo(offender_notification.dict())
+                
+                await db.notifications.insert_one(recipient_prepared)
+                await db.notifications.insert_one(offender_prepared)
+        
+        return behavior_obj
+        
+    except Exception as e:
+        logger.error(f"Error creating behavior entry: {str(e)}")
+        logger.error(f"Behavior data: {behavior_data}")
+        logger.error(f"User ID: {user_id}")
+        raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
 
 @api_router.get("/behaviors/{user_id}", response_model=List[BehaviorEntry])
 async def get_user_behaviors(user_id: str):
