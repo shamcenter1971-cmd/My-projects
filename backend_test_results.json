@@ -1,6 +1,6 @@
 {
-  "total_tests": 20,
-  "passed_tests": 20,
+  "total_tests": 23,
+  "passed_tests": 23,
   "failed_tests": 0,
   "success_rate": 100.0,
   "test_details": [
@@ -9,140 +9,161 @@
       "status": "✅ PASS",
       "success": true,
       "details": "API is running - Status: 200",
-      "timestamp": "2025-10-02T20:28:56.141899"
+      "timestamp": "2025-10-03T12:18:38.672967"
     },
     {
       "test_name": "User Registration 1",
       "status": "✅ PASS",
       "success": true,
-      "details": "User created with ID: 96c71f70-1fbb-4e6e-86d9-752128374b0a, Pairing Code: 64E5052A",
-      "timestamp": "2025-10-02T20:28:56.186665"
+      "details": "User created with ID: f7e27d82-664e-4628-a974-30bd886c05fe, Pairing Code: CC62EB6B",
+      "timestamp": "2025-10-03T12:18:38.738924"
     },
     {
       "test_name": "User Registration 2",
       "status": "✅ PASS",
       "success": true,
-      "details": "User created with ID: 679bf289-4f32-4988-8318-48deafaf997d, Pairing Code: EAA673F0",
-      "timestamp": "2025-10-02T20:28:56.244342"
+      "details": "User created with ID: a1a992d4-b03e-4261-98a1-88c55d84a504, Pairing Code: C522863A",
+      "timestamp": "2025-10-03T12:18:38.780231"
     },
     {
       "test_name": "Duplicate Email Prevention",
       "status": "✅ PASS",
       "success": true,
       "details": "Correctly prevented duplicate email registration",
-      "timestamp": "2025-10-02T20:28:56.325393"
+      "timestamp": "2025-10-03T12:18:38.818974"
     },
     {
       "test_name": "User Retrieval",
       "status": "✅ PASS",
       "success": true,
-      "details": "Successfully retrieved user: أحمد محمد 202856",
-      "timestamp": "2025-10-02T20:28:56.366689"
+      "details": "Successfully retrieved user: أحمد محمد 121838",
+      "timestamp": "2025-10-03T12:18:38.872496"
     },
     {
       "test_name": "User Login Success",
       "status": "✅ PASS",
       "success": true,
-      "details": "Successfully logged in user: أحمد محمد 202856 with email: ahmed_202856@test.com",
-      "timestamp": "2025-10-02T20:28:56.442625"
+      "details": "Successfully logged in user: أحمد محمد 121838 with email: ahmed_121838@test.com",
+      "timestamp": "2025-10-03T12:18:38.912817"
     },
     {
       "test_name": "User Login Invalid Email",
       "status": "✅ PASS",
       "success": true,
       "details": "Correctly rejected login with non-existent email",
-      "timestamp": "2025-10-02T20:28:56.525411"
+      "timestamp": "2025-10-03T12:18:38.953680"
     },
     {
       "test_name": "User Pairing",
       "status": "✅ PASS",
       "success": true,
-      "details": "Successfully paired أحمد محمد 202856 with فاطمة أحمد 202856",
-      "timestamp": "2025-10-02T20:28:56.565088"
+      "details": "Successfully paired أحمد محمد 121838 with فاطمة أحمد 121838",
+      "timestamp": "2025-10-03T12:18:38.996951"
     },
     {
       "test_name": "Invalid Pairing Code",
       "status": "✅ PASS",
       "success": true,
       "details": "Correctly rejected invalid pairing code",
-      "timestamp": "2025-10-02T20:28:56.602516"
+      "timestamp": "2025-10-03T12:18:39.031614"
     },
     {
       "test_name": "Positive Behavior Entry",
       "status": "✅ PASS",
       "success": true,
-      "details": "Created positive behavior entry: c7ff0f3d-f231-4b45-9e73-2ae1efb3285e",
-      "timestamp": "2025-10-02T20:28:56.642945"
+      "details": "Created positive behavior entry: cfcb53a2-7ba9-4aa4-b408-ec78bdcbcb27",
+      "timestamp": "2025-10-03T12:18:39.077962"
     },
     {
       "test_name": "Negative Behavior Entry",
       "status": "✅ PASS",
       "success": true,
-      "details": "Created negative behavior entry: f8c42af9-30eb-4cb6-ac6f-8c4529e8dc5c",
-      "timestamp": "2025-10-02T20:28:56.683394"
+      "details": "Created negative behavior entry: e7aaca03-d0f4-4ccc-9af3-85e1dc1cf124",
+      "timestamp": "2025-10-03T12:18:39.124801"
     },
     {
       "test_name": "Behavior Retrieval",
       "status": "✅ PASS",
       "success": true,
       "details": "Retrieved 2 behaviors for user",
-      "timestamp": "2025-10-02T20:28:56.717908"
+      "timestamp": "2025-10-03T12:18:39.160248"
     },
     {
       "test_name": "Behavior Patterns",
       "status": "✅ PASS",
       "success": true,
       "details": "Retrieved behavior patterns: 2 patterns found",
-      "timestamp": "2025-10-02T20:28:56.754960"
+      "timestamp": "2025-10-03T12:18:39.196229"
     },
     {
       "test_name": "Reinforcement Categories",
       "status": "✅ PASS",
       "success": true,
       "details": "Retrieved 5 categories",
-      "timestamp": "2025-10-02T20:28:56.790455"
+      "timestamp": "2025-10-03T12:18:39.232372"
     },
     {
-      "test_name": "Reinforcement Templates",
+      "test_name": "BETA: Expanded Rewards System",
       "status": "✅ PASS",
       "success": true,
-      "details": "Retrieved 10 templates",
-      "timestamp": "2025-10-02T20:28:56.826286"
+      "details": "All 10 specific Arabic rewards found with correct costs (5-100 points)",
+      "timestamp": "2025-10-03T12:18:39.269317"
     },
     {
       "test_name": "Reinforcement Creation",
       "status": "✅ PASS",
       "success": true,
-      "details": "Created reinforcement: 58d1ceb7-99e5-49f4-bcdf-3ea8a85dbb24",
-      "timestamp": "2025-10-02T20:28:56.865051"
+      "details": "Created reinforcement: 277315c5-5502-4ecf-a6aa-2a16ded8ea23",
+      "timestamp": "2025-10-03T12:18:39.311983"
     },
     {
       "test_name": "Partner Reinforcements",
       "status": "✅ PASS",
       "success": true,
       "details": "Retrieved 0 partner reinforcements",
-      "timestamp": "2025-10-02T20:28:56.908572"
+      "timestamp": "2025-10-03T12:18:39.346600"
     },
     {
       "test_name": "Point Awarding",
       "status": "✅ PASS",
       "success": true,
       "details": "Successfully awarded points to partner",
-      "timestamp": "2025-10-02T20:28:56.945068"
+      "timestamp": "2025-10-03T12:18:39.389037"
     },
     {
       "test_name": "Point History",
       "status": "✅ PASS",
       "success": true,
       "details": "Retrieved 1 point transactions",
-      "timestamp": "2025-10-02T20:28:56.980518"
+      "timestamp": "2025-10-03T12:18:39.465679"
+    },
+    {
+      "test_name": "BETA: A-B-C Context Injection",
+      "status": "✅ PASS",
+      "success": true,
+      "details": "Successfully retrieved behavior b948190d-9dda-4fe6-9995-cd9b6feae1ea with full A-B-C context",
+      "timestamp": "2025-10-03T12:18:39.576629"
+    },
+    {
+      "test_name": "BETA: Points Deduction Mechanism",
+      "status": "✅ PASS",
+      "success": true,
+      "details": "Successfully redeemed reinforcement. Points: 51 → 41",
+      "timestamp": "2025-10-03T12:18:39.762114"
+    },
+    {
+      "test_name": "BETA: Complete Negative Behavior Workflow",
+      "status": "✅ PASS",
+      "success": true,
+      "details": "Full workflow working: behavior → repair cycle → A-B-C notification",
+      "timestamp": "2025-10-03T12:18:39.867490"
     },
     {
       "test_name": "Dashboard",
       "status": "✅ PASS",
       "success": true,
-      "details": "Retrieved dashboard data for user: أحمد محمد 202856",
-      "timestamp": "2025-10-02T20:28:57.018513"
+      "details": "Retrieved dashboard data for user: أحمد محمد 121838",
+      "timestamp": "2025-10-03T12:18:39.907510"
     }
   ],
   "test_users_created": 2
