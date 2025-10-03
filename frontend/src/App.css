@@ -187,8 +187,8 @@ body {
 
 .notification-badge {
   position: absolute;
-  top: -0.5rem;
-  right: -0.5rem; /* RTL positioning - was left */
+  top: -0.75rem;
+  right: -0.75rem; /* RTL positioning - moved further right */
   background: #dc2626;
   color: white;
   border-radius: 50%;
