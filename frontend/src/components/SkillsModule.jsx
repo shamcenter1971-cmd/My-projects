@@ -496,76 +496,78 @@ const SkillsModule = ({ user, partner, onBack }) => {
 
   return (
     <div className="min-h-screen p-4 space-y-6">
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-6xl mx-auto px-4">
         {/* Header */}
-        <div className="flex items-center gap-4 mb-6">
+        <div className="dashboard-header mb-8">
           <Button 
             onClick={onBack}
             variant="outline"
-            className="arabic-text"
+            className="arabic-text mb-4 md:mb-0"
             data-testid="back-button"
           >
             ← العودة
           </Button>
-          <div>
-            <h1 className="text-3xl font-bold arabic-title text-emerald-800">
+          <div className="text-center md:text-right">
+            <h1 className="text-3xl font-bold arabic-title text-emerald-800 mb-3">
               أدوات المساعدة وحل الخلافات
             </h1>
-            <p className="text-emerald-600 arabic-text">
+            <p className="text-emerald-600 arabic-text text-lg leading-relaxed">
               تعلم المهارات البديلة للسلوكيات السلبية المسجلة في محلل السلوك
             </p>
           </div>
         </div>
 
         {/* Skills Overview */}
-        <Card className="glass border-emerald-200 mb-6">
-          <CardHeader>
-            <CardTitle className="arabic-title text-emerald-800">
+        <Card className="glass border-emerald-200 mb-8">
+          <CardHeader className="pb-4">
+            <CardTitle className="arabic-title text-emerald-800 text-2xl mb-3">
               الأدوات المتاحة
             </CardTitle>
-            <CardDescription className="arabic-text">
+            <CardDescription className="arabic-text text-base leading-relaxed">
               وحدات تعليمية قصيرة (10-15 دقيقة) لتطوير مهارات التواصل الإيجابي وحل الخلافات
             </CardDescription>
           </CardHeader>
-          <CardContent>
-            <div className="grid gap-4">
+          <CardContent className="pt-4">
+            <div className="grid gap-6">
               {allModules.map((module) => (
                 <div 
                   key={module.id}
-                  className={`p-4 border rounded-lg cursor-pointer transition-all ${
-                    activeModule === module.id ? "border-emerald-400 bg-emerald-50" : "border-emerald-200 hover:bg-emerald-50"
+                  className={`skill-section cursor-pointer transition-all ${
+                    activeModule === module.id ? "border-emerald-400 bg-emerald-50 shadow-md" : "border-emerald-200 hover:bg-emerald-50"
                   }`}
                   onClick={() => setActiveModule(module.id)}
                   data-testid={`${module.id}-skill-card`}
                 >
-                  <div className="flex justify-between items-center">
+                  <div className="flex justify-between items-start gap-4">
                     <div className="flex-1">
-                      <h3 className="font-semibold arabic-text text-emerald-800">
+                      <h3 className="text-xl font-semibold arabic-title text-emerald-800 mb-3">
                         {module.title}
                       </h3>
-                      <p className="text-sm text-emerald-600 arabic-text mt-1">
+                      <p className="text-emerald-600 arabic-text mb-3 leading-relaxed">
                         {module.description}
                       </p>
                       {module.goal && (
-                        <p className="text-xs text-emerald-500 arabic-text mt-1 font-medium">
-                          الهدف: {module.goal}
+                        <p className="text-sm text-emerald-500 arabic-text mb-4 font-medium leading-relaxed">
+                          🎯 الهدف: {module.goal}
                         </p>
                       )}
-                      <div className="flex items-center gap-2 mt-2">
-                        <Badge variant="secondary" className="arabic-text text-xs">
+                      <div className="flex flex-wrap items-center gap-3">
+                        <Badge variant="secondary" className="arabic-text px-3 py-1">
                           {module.duration}
                         </Badge>
-                        <Badge variant="secondary" className="arabic-text text-xs">
+                        <Badge variant="secondary" className="arabic-text px-3 py-1">
                           {module.sections.length} أقسام
                         </Badge>
                       </div>
                     </div>
-                    {completedModules.has(module.id) && (
-                      <div className="flex items-center gap-1 text-emerald-600">
-                        <span className="text-lg">✅</span>
-                        <span className="text-xs arabic-text">مكتمل</span>
-                      </div>
-                    )}
+                    <div className="flex-shrink-0">
+                      {completedModules.has(module.id) && (
+                        <div className="flex items-center gap-2 text-emerald-600">
+                          <span className="text-2xl">✅</span>
+                          <span className="text-sm arabic-text font-medium">مكتمل</span>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               ))}
