@@ -672,6 +672,13 @@ class MithaqAPITester:
         self.test_point_awarding()
         self.test_point_history()
         
+        # BETA FEATURE TESTS - Critical for Beta Release
+        print("\n🔥 BETA FEATURE TESTING - Critical Components")
+        print("-" * 50)
+        self.test_behavior_by_id()
+        self.test_reinforcement_redemption()
+        self.test_negative_behavior_workflow()
+        
         # Dashboard Tests
         self.test_dashboard()
         
