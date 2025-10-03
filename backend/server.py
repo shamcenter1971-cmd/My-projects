@@ -525,6 +525,23 @@ async def get_point_history(user_id: str):
     transactions = await db.point_transactions.find({"$or": [{"user_id": user_id}, {"partner_id": user_id}]}).to_list(1000)
     return [PointTransaction(**parse_from_mongo(transaction)) for transaction in transactions]
 
+# Commitment Phrase Routes
+@api_router.post("/commitment-phrases")
+async def save_commitment_phrase(phrase_data: CommitmentPhraseCreate):
+    try:
+        phrase_obj = CommitmentPhrase(**phrase_data.dict())
+        prepared_data = prepare_for_mongo(phrase_obj.dict())
+        await db.commitment_phrases.insert_one(prepared_data)
+        return {"message": "Commitment phrase saved successfully", "id": phrase_obj.id}
+    except Exception as e:
+        logger.error(f"Error saving commitment phrase: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
+
+@api_router.get("/commitment-phrases/{user_id}")
+async def get_user_commitment_phrases(user_id: str):
+    phrases = await db.commitment_phrases.find({"user_id": user_id}).to_list(100)
+    return [CommitmentPhrase(**parse_from_mongo(phrase)) for phrase in phrases]
+
 # Repair Cycle Routes
 @api_router.get("/repair-cycles/{user_id}")
 async def get_user_repair_cycles(user_id: str):
