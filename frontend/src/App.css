@@ -438,11 +438,12 @@ body {
   
   /* Notification mobile fixes */
   .notification-badge {
-    top: -0.25rem !important;
-    right: -0.25rem !important;
+    top: -0.5rem !important;
+    right: -0.5rem !important;
     width: 1.25rem !important;
     height: 1.25rem !important;
     font-size: 0.65rem !important;
+    z-index: 10 !important; /* Ensure it appears above text */
   }
   
   /* Progress and status elements */
