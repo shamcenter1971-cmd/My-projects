@@ -188,7 +188,72 @@ const RepairCycle = ({ user, partner, onBack, onComplete }) => {
           </div>
         </div>
 
-        {/* Progress Overview */}
+        {/* A-B-C Context Display */}
+        {behaviorContext && (
+          <Card className="glass border-orange-300 bg-orange-50 mb-6">
+            <CardHeader>
+              <CardTitle className="arabic-title text-orange-800 flex items-center gap-2">
+                <span className="text-2xl">📋</span>
+                السلوك الذي يحتاج إلى إصلاح
+              </CardTitle>
+              <CardDescription className="arabic-text text-orange-600">
+                هذا هو السلوك السلبي الذي سجله شريكك وتحتاج إلى الإقرار به وإصلاحه
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid md:grid-cols-3 gap-4">
+                <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                  <h4 className="font-semibold arabic-text text-blue-800 mb-2 flex items-center gap-2">
+                    <span className="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center text-xs font-bold text-blue-600">
+                      A
+                    </span>
+                    الوضع (ما حدث قبل السلوك):
+                  </h4>
+                  <p className="arabic-text text-blue-700 text-sm">
+                    {behaviorContext.antecedent}
+                  </p>
+                </div>
+
+                <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
+                  <h4 className="font-semibold arabic-text text-red-800 mb-2 flex items-center gap-2">
+                    <span className="w-6 h-6 bg-red-100 rounded-full flex items-center justify-center text-xs font-bold text-red-600">
+                      B
+                    </span>
+                    سلوكك (ما فعلته):
+                  </h4>
+                  <p className="arabic-text text-red-700 text-sm font-medium">
+                    {behaviorContext.behavior}
+                  </p>
+                </div>
+
+                <div className="p-4 bg-purple-50 border border-purple-200 rounded-lg">
+                  <h4 className="font-semibold arabic-text text-purple-800 mb-2 flex items-center gap-2">
+                    <span className="w-6 h-6 bg-purple-100 rounded-full flex items-center justify-center text-xs font-bold text-purple-600">
+                      C
+                    </span>
+                    التأثير (ما حدث بعد ذلك):
+                  </h4>
+                  <p className="arabic-text text-purple-700 text-sm">
+                    {behaviorContext.consequence}
+                  </p>
+                </div>
+              </div>
+
+              <div className="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-lg">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-amber-600 text-lg">⚠️</span>
+                  <h4 className="font-medium arabic-text text-amber-800">
+                    سبب تفعيل دورة الإصلاح الفورية:
+                  </h4>
+                </div>
+                <p className="text-sm arabic-text text-amber-700">
+                  هذا السلوك أثر سلبياً على شريكك وعلى العلاقة. من خلال إكمال خطوات الإصلاح، 
+                  ستُظهر التزامك بالتعلم وتحسين تفاعلك المستقبلي.
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        )}
         <Card className="glass border-emerald-200 mb-6">
           <CardHeader>
             <CardTitle className="arabic-title text-emerald-800">
