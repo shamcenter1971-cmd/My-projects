@@ -624,7 +624,80 @@ const SkillsModule = ({ user, partner, onBack }) => {
                         ))}
                       </div>
 
-                      {/* Practice Button */}
+                      {/* Interactive Elements */}
+                      <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                        {/* Section Progress Indicator */}
+                        <div className="flex items-center justify-between mb-4">
+                          <span className="text-sm font-medium arabic-text text-blue-800">
+                            حالة القسم:
+                          </span>
+                          {sectionProgress[`${module.id}_${section.id}`] ? (
+                            <Badge className="bg-green-100 text-green-800 arabic-text">
+                              ✅ مكتمل
+                            </Badge>
+                          ) : (
+                            <Badge variant="outline" className="arabic-text">
+                              ⏳ في الانتظار
+                            </Badge>
+                          )}
+                        </div>
+
+                        {/* Commitment Phrase Input for specific sections */}
+                        {(section.id === 'how' || section.id === 'specific_requests' || section.id === 'scripts') && (
+                          <div className="mb-4">
+                            <h4 className="font-medium arabic-text text-blue-800 mb-2">
+                              💭 اكتب عبارة الالتزام الشخصية:
+                            </h4>
+                            <p className="text-sm arabic-text text-blue-600 mb-3">
+                              اكتب بكلماتك الخاصة كيف ستطبق هذه المهارة في حياتك اليومية
+                            </p>
+                            {commitmentPhrases[`${module.id}_commitment`] ? (
+                              <div className="p-3 bg-green-50 border border-green-200 rounded-lg">
+                                <p className="arabic-text text-green-800 font-medium">
+                                  عبارة الالتزام المحفوظة:
+                                </p>
+                                <p className="arabic-text text-green-700 mt-1">
+                                  "{commitmentPhrases[`${module.id}_commitment`]}"
+                                </p>
+                              </div>
+                            ) : (
+                              <div className="space-y-3">
+                                <textarea
+                                  value={currentCommitmentSection === `${module.id}_${section.id}` ? currentCommitmentPhrase : ''}
+                                  onChange={(e) => {
+                                    setCurrentCommitmentPhrase(e.target.value);
+                                    setCurrentCommitmentSection(`${module.id}_${section.id}`);
+                                  }}
+                                  placeholder="مثال: سأستخدم عبارة 'أحتاج إلى استراحة' بدلاً من الصراخ عندما أشعر بالغضب..."
+                                  className="w-full p-3 border border-blue-300 rounded-lg arabic-text"
+                                  rows="3"
+                                />
+                                <Button
+                                  onClick={() => handleCommitmentPhrase(module.id, 'commitment', currentCommitmentPhrase)}
+                                  disabled={!currentCommitmentPhrase.trim() || currentCommitmentSection !== `${module.id}_${section.id}`}
+                                  className="w-full arabic-text"
+                                  variant="outline"
+                                >
+                                  💾 حفظ عبارة الالتزام
+                                </Button>
+                              </div>
+                            )}
+                          </div>
+                        )}
+
+                        {/* Section Interaction Button */}
+                        {!sectionProgress[`${module.id}_${section.id}`] && (
+                          <Button
+                            onClick={() => handleSectionInteraction(module.id, section.id, 'read')}
+                            className="w-full arabic-text"
+                            variant="default"
+                          >
+                            ✅ أكملت قراءة هذا القسم
+                          </Button>
+                        )}
+                      </div>
+
+                      {/* Module Completion Button - Only show on last section */}
                       {section.id === module.sections[module.sections.length - 1].id && (
                         <div className="text-center pt-6 border-t border-emerald-200">
                           <Button
