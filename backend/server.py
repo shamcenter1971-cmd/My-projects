@@ -30,15 +30,74 @@ api_router = APIRouter(prefix="/api")
 security = HTTPBearer()
 
 # Helper functions for data serialization
+import json
+import re
+
+def clean_json_string(text):
+    """Clean and escape text to prevent JSON syntax errors"""
+    if not isinstance(text, str):
+        return text
+    
+    # Remove or escape problematic characters
+    text = re.sub(r'[\x00-\x1f\x7f-\x9f]', '', text)  # Remove control characters
+    
+    # Ensure proper UTF-8 encoding for Arabic text
+    try:
+        text = text.encode('utf-8').decode('utf-8')
+    except:
+        text = str(text)
+    
+    return text
+
 def prepare_for_mongo(data):
-    if isinstance(data.get('created_at'), datetime):
-        data['created_at'] = data['created_at'].isoformat()
-    return data
+    """Comprehensive data preparation for MongoDB insertion"""
+    if data is None:
+        return None
+    
+    if isinstance(data, dict):
+        prepared = {}
+        for key, value in data.items():
+            if isinstance(value, datetime):
+                prepared[key] = value.isoformat()
+            elif isinstance(value, str):
+                prepared[key] = clean_json_string(value)
+            elif isinstance(value, list):
+                prepared[key] = [clean_json_string(item) if isinstance(item, str) else item for item in value]
+            elif isinstance(value, dict):
+                prepared[key] = prepare_for_mongo(value)
+            else:
+                prepared[key] = value
+        return prepared
+    elif isinstance(data, str):
+        return clean_json_string(data)
+    elif isinstance(data, list):
+        return [prepare_for_mongo(item) for item in data]
+    else:
+        return data
 
 def parse_from_mongo(item):
-    if isinstance(item.get('created_at'), str):
-        item['created_at'] = datetime.fromisoformat(item['created_at'])
-    return item
+    """Parse data retrieved from MongoDB"""
+    if item is None:
+        return None
+        
+    if isinstance(item, dict):
+        parsed = {}
+        for key, value in item.items():
+            if key == 'created_at' and isinstance(value, str):
+                try:
+                    parsed[key] = datetime.fromisoformat(value.replace('Z', '+00:00'))
+                except:
+                    parsed[key] = value
+            elif key == 'completed_at' and isinstance(value, str) and value:
+                try:
+                    parsed[key] = datetime.fromisoformat(value.replace('Z', '+00:00'))
+                except:
+                    parsed[key] = value
+            else:
+                parsed[key] = value
+        return parsed
+    else:
+        return item
 
 # Define Models
 class User(BaseModel):
