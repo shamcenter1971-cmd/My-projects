@@ -26,11 +26,27 @@ const RepairCycle = ({ user, partner, onBack, onComplete }) => {
       if (response.data) {
         setActiveRepairCycle(response.data);
         determineCurrentStep(response.data);
+        
+        // Fetch the A-B-C behavior context
+        await fetchBehaviorContext(response.data.behavior_id);
       }
     } catch (error) {
       console.error("Error fetching repair cycle:", error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchBehaviorContext = async (behaviorId) => {
+    try {
+      // Get the specific behavior that triggered this repair cycle
+      const behaviorResponse = await axios.get(`${API}/behaviors/${user.id}/couple`);
+      const behavior = behaviorResponse.data.find(b => b.id === behaviorId);
+      if (behavior) {
+        setBehaviorContext(behavior);
+      }
+    } catch (error) {
+      console.error("Error fetching behavior context:", error);
     }
   };
 
