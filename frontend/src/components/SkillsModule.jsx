@@ -14,6 +14,12 @@ const API = `${BACKEND_URL}/api`;
 const SkillsModule = ({ user, partner, onBack }) => {
   const [completedModules, setCompletedModules] = useState(new Set());
   const [activeModule, setActiveModule] = useState("timeout");
+  const [sectionProgress, setSectionProgress] = useState({}); // Track section completion
+  const [unlockedSections, setUnlockedSections] = useState({}); // Track unlocked sections
+  const [commitmentPhrases, setCommitmentPhrases] = useState({}); // Store user's commitment phrases
+  const [currentCommitmentPhrase, setCurrentCommitmentPhrase] = useState(""); // Current input
+  const [showCommitmentInput, setShowCommitmentInput] = useState(false);
+  const [currentCommitmentSection, setCurrentCommitmentSection] = useState(null);
 
   const markModuleComplete = async (moduleId) => {
     try {
