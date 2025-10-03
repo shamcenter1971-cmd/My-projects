@@ -145,6 +145,17 @@ function App() {
             } 
           />
           <Route 
+            path="/repair-cycle" 
+            element={
+              <RepairCycle 
+                user={user} 
+                partner={partner}
+                onBack={() => window.history.back()}
+                onComplete={() => fetchUserData(user.id)}
+              />
+            } 
+          />
+          <Route 
             path="/help-tools" 
             element={
               <SkillsModule 
