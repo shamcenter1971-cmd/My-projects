@@ -306,12 +306,44 @@ class MithaqAPITester:
             return False
 
     def test_reinforcement_templates(self):
-        """Test getting reinforcement templates"""
+        """Test getting reinforcement templates - BETA FEATURE: Expanded Rewards System"""
         success, data, status = self.make_request('GET', 'reinforcement-templates')
         
         if success and status == 200 and 'templates' in data and len(data['templates']) > 0:
-            self.log_test("Reinforcement Templates", True, f"Retrieved {len(data['templates'])} templates")
-            return True
+            templates = data['templates']
+            
+            # BETA TEST: Verify we have exactly 10 specific Arabic rewards
+            expected_rewards = [
+                {"title": "كلمة شكر محددة ومركزة", "cost": 5},
+                {"title": "عناق لمدة 30 ثانية", "cost": 10},
+                {"title": "استلام مهمة صغيرة من واجبات الشريك", "cost": 15},
+                {"title": "اختيار الموسيقى أو قائمة التشغيل للمنزل", "cost": 20},
+                {"title": "20 دقيقة انتباه كامل وغير مقسوم", "cost": 25},
+                {"title": "شراء طعام جاهز بدلاً من الطبخ", "cost": 30},
+                {"title": "مساج مريح لمدة 20 دقيقة", "cost": 35},
+                {"title": "هدية رمزية صغيرة (يتم شراؤها في أقرب فرصة)", "cost": 50},
+                {"title": "تجهيز عشاء فاخر في المنزل أو خارجه", "cost": 75},
+                {"title": "أمسية رومانسية مخطط لها بالكامل (Date Night)", "cost": 100}
+            ]
+            
+            if len(templates) == 10:
+                # Check if all expected rewards are present with correct costs
+                found_rewards = 0
+                for expected in expected_rewards:
+                    for template in templates:
+                        if expected["title"] in template["title"] and template["cost"] == expected["cost"]:
+                            found_rewards += 1
+                            break
+                
+                if found_rewards == 10:
+                    self.log_test("BETA: Expanded Rewards System", True, f"All 10 specific Arabic rewards found with correct costs (5-100 points)")
+                    return True
+                else:
+                    self.log_test("BETA: Expanded Rewards System", False, f"Only {found_rewards}/10 expected rewards found with correct costs")
+                    return False
+            else:
+                self.log_test("BETA: Expanded Rewards System", False, f"Expected 10 rewards, got {len(templates)}")
+                return False
         else:
             self.log_test("Reinforcement Templates", False, f"Failed to retrieve templates - Status: {status}")
             return False
