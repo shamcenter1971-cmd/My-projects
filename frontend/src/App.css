@@ -214,12 +214,19 @@ body {
   border: 2px solid white;
 }
 
-/* Skill module specific fixes */
+/* Skill module specific fixes - CRITICAL CONTAINER WIDTH FIX */
 .skill-section {
   padding: 1.5rem;
   margin: 1rem 0;
   border-radius: 12px;
   line-height: 1.8;
+  width: 100%; /* Full width container */
+  min-width: 0; /* Allow shrinking */
+  max-width: 100%; /* Prevent overflow */
+  box-sizing: border-box;
+  overflow: visible;
+  word-wrap: break-word;
+  hyphens: auto;
 }
 
 .skill-section h2, .skill-section h3, .skill-section h4 {
