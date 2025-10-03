@@ -210,11 +210,7 @@ metadata:
 
 test_plan:
   current_focus:
-    - "A-B-C Context Injection - Repair Cycle Notifications"
-    - "Expanded Positive Rewards System Backend"
-    - "Reinforcement Redemption Point Deduction"
-    - "A-B-C Context Display in Repair Pop-up"
-    - "Dashboard Notification Counter Overlap Fix"
+    - "FINAL TESTING: All Beta features implemented and CSS fixes applied"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
