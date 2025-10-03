@@ -85,17 +85,41 @@ const SkillsModule = ({ user, partner, onBack }) => {
       toast.error("حدث خطأ أثناء حفظ عبارة الالتزام");
     }
   };
+
+  const markModuleComplete = async (moduleId) => {
+    // Check if all sections have been interacted with
+    const module = allModules.find(m => m.id === moduleId);
+    const requiredInteractions = module.sections.length;
+    const completedInteractions = module.sections.filter(section => 
+      sectionProgress[`${moduleId}_${section.id}`]
+    ).length;
+
+    if (completedInteractions < requiredInteractions) {
+      toast.error(`يجب إكمال جميع الأقسام التفاعلية أولاً (${completedInteractions}/${requiredInteractions})`);
+      return;
+    }
+
+    // Check if commitment phrase is required and saved
+    const hasCommitmentSection = module.sections.some(s => 
+      s.id === 'how' || s.id === 'specific_requests' || s.id === 'scripts'
+    );
+    
+    if (hasCommitmentSection && !commitmentPhrases[`${moduleId}_commitment`]) {
+      toast.error("يجب حفظ عبارة الالتزام الشخصية أولاً!");
+      return;
+    }
+
     try {
-      // Award points for completing a module
+      // Award points for completing a module (only after all interactions)
       await axios.post(`${API}/points/award?user_id=${user.id}`, {
         partner_id: partner.id,
         points: 3,
         transaction_type: "earned",
-        description: `أكمل وحدة مهارة: ${getModuleTitle(moduleId)}`
+        description: `أكمل وحدة مهارة تفاعلية: ${getModuleTitle(moduleId)}`
       });
 
       setCompletedModules(prev => new Set([...prev, moduleId]));
-      toast.success("تم إكمال الوحدة بنجاح! حصلت على 3 نقاط");
+      toast.success("تم إكمال الوحدة التفاعلية بنجاح! حصلت على 3 نقاط");
     } catch (error) {
       toast.error("حدث خطأ أثناء حفظ التقدم");
     }
