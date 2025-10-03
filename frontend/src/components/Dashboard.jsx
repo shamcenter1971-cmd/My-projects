@@ -71,47 +71,52 @@ const Dashboard = ({ user, partner, onLogout, onRefresh }) => {
     <div className="min-h-screen p-4 space-y-6">
       {/* Header */}
       <div className="max-w-6xl mx-auto">
-        <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
-          <div className="text-center md:text-right">
-            <h1 className="text-3xl font-bold arabic-title text-emerald-800">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-6 mb-8">
+          <div className="text-center md:text-right order-2 md:order-1">
+            <h1 className="text-3xl font-bold arabic-title text-emerald-800 mb-2">
               لوحة التحكم
             </h1>
             <p className="text-emerald-600 arabic-text">
               مرحباً {user.name} - مربوط مع {partner.name}
             </p>
           </div>
-          <div className="flex items-center gap-4">
-            <Dialog open={showNotifications} onOpenChange={setShowNotifications}>
-              <DialogTrigger asChild>
-                <Button 
-                  variant="outline" 
-                  className="arabic-text relative"
-                  data-testid="notifications-button"
-                >
-                  📢 التنبيهات
-                  {unreadCount > 0 && (
-                    <Badge className="absolute -top-2 -right-2 bg-red-500 text-white text-xs min-w-[20px] h-5 rounded-full flex items-center justify-center">
-                      {unreadCount}
-                    </Badge>
-                  )}
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="max-w-2xl">
-                <DialogHeader>
-                  <DialogTitle className="arabic-title text-emerald-800">
-                    التنبيهات والرسائل التوجيهية
-                  </DialogTitle>
-                </DialogHeader>
-                <NotificationCenter 
-                  user={user} 
-                  onClose={() => setShowNotifications(false)}
-                />
-              </DialogContent>
-            </Dialog>
+          <div className="dashboard-actions order-1 md:order-2">
+            <div className="notification-container">
+              <Dialog open={showNotifications} onOpenChange={setShowNotifications}>
+                <DialogTrigger asChild>
+                  <div className="relative">
+                    <Button 
+                      variant="outline" 
+                      className="arabic-text relative px-4 py-2"
+                      data-testid="notifications-button"
+                    >
+                      📢 التنبيهات
+                    </Button>
+                    {unreadCount > 0 && (
+                      <div className="notification-badge">
+                        {unreadCount}
+                      </div>
+                    )}
+                  </div>
+                </DialogTrigger>
+                <DialogContent className="max-w-2xl">
+                  <DialogHeader>
+                    <DialogTitle className="arabic-title text-emerald-800">
+                      التنبيهات والرسائل التوجيهية
+                    </DialogTitle>
+                  </DialogHeader>
+                  <NotificationCenter 
+                    user={user} 
+                    onClose={() => setShowNotifications(false)}
+                  />
+                </DialogContent>
+              </Dialog>
+            </div>
             
-            <Badge className="points-badge arabic-text" data-testid="user-points">
+            <Badge className="points-badge arabic-text no-overlap" data-testid="user-points">
               {user.points} نقطة
             </Badge>
+            
             <Button 
               onClick={onLogout}
               variant="outline"
