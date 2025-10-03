@@ -593,3 +593,81 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(5, 150, 105, 0.5);
 }
+
+/* CRITICAL BETA FIX: Container width and text display fixes */
+.skills-module-container,
+.max-w-6xl,
+.max-w-4xl,
+.max-w-2xl {
+  width: 95% !important;
+  max-width: 95% !important;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+/* CRITICAL: Fix vertical text stacking in skill titles */
+.arabic-title,
+.arabic-text,
+h1, h2, h3, h4, h5, h6,
+.skill-section *,
+.glass *,
+.card-hover * {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  word-wrap: break-word !important;
+  overflow-wrap: break-word !important;
+  white-space: normal !important;
+  hyphens: auto !important;
+  box-sizing: border-box !important;
+}
+
+/* CRITICAL: Button text visibility fix */
+button,
+.btn-primary,
+.btn-secondary,
+[role="button"],
+.tab-trigger {
+  font-family: 'Cairo', sans-serif !important;
+  font-size: 0.95rem !important;
+  font-weight: 500 !important;
+  color: inherit !important;
+  text-decoration: none !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  white-space: normal !important;
+  word-wrap: break-word !important;
+  line-height: 1.4 !important;
+  min-height: 2.5rem !important;
+  padding: 0.75rem 1rem !important;
+}
+
+/* CRITICAL: Force text to display in buttons and tabs */
+button span,
+.btn-primary span,
+.btn-secondary span,
+.tab-trigger span {
+  display: inline !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  color: inherit !important;
+  font-size: inherit !important;
+}
+
+/* CRITICAL: Prevent font loading issues */
+* {
+  font-display: swap !important;
+}
+
+/* CRITICAL: Ensure Arabic text renders properly */
+[lang="ar"],
+.arabic-title,
+.arabic-text {
+  unicode-bidi: embed !important;
+  direction: rtl !important;
+  text-align: right !important;
+}
