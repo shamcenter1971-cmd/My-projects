@@ -361,123 +361,79 @@ const SkillsModule = ({ user, partner, onBack }) => {
         </Card>
 
         {/* Module Content */}
-        {activeModule === "timeout" && (
-          <Card className="glass border-emerald-200">
-            <CardHeader>
-              <CardTitle className="arabic-title text-emerald-800 flex items-center gap-3">
-                <span className="text-2xl">🧘</span>
-                {timeoutModule.title}
-              </CardTitle>
-              <CardDescription className="arabic-text">
-                {timeoutModule.description}
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Tabs defaultValue="when" className="w-full">
-                <TabsList className="grid w-full grid-cols-3 mb-6">
-                  <TabsTrigger value="when" className="arabic-text">العلامات الحمراء</TabsTrigger>
-                  <TabsTrigger value="how" className="arabic-text">العبارات البديلة</TabsTrigger>
-                  <TabsTrigger value="soothing" className="arabic-text">التهدئة الذاتية</TabsTrigger>
-                </TabsList>
+        {allModules.map((module) => (
+          activeModule === module.id && (
+            <Card key={module.id} className="glass border-emerald-200">
+              <CardHeader>
+                <CardTitle className="arabic-title text-emerald-800 flex items-center gap-3">
+                  <span className="text-2xl">
+                    {module.id === 'timeout' && '🧘'}
+                    {module.id === 'active_listening' && '👂'}
+                    {module.id === 'expressing_needs' && '💬'}
+                  </span>
+                  {module.title}
+                </CardTitle>
+                <CardDescription className="arabic-text">
+                  {module.description}
+                </CardDescription>
+                {module.goal && (
+                  <p className="text-sm text-emerald-600 arabic-text font-medium">
+                    🎯 {module.goal}
+                  </p>
+                )}
+              </CardHeader>
+              <CardContent>
+                <Tabs defaultValue={module.sections[0].id} className="w-full">
+                  <TabsList className={`grid w-full grid-cols-${module.sections.length} mb-6`}>
+                    {module.sections.map((section) => (
+                      <TabsTrigger key={section.id} value={section.id} className="arabic-text text-xs">
+                        {section.title.split('(')[0].trim()}
+                      </TabsTrigger>
+                    ))}
+                  </TabsList>
 
-                {timeoutModule.sections.map((section) => (
-                  <TabsContent key={section.id} value={section.id} className="space-y-6">
-                    <div className="text-center mb-6">
-                      <h2 className="text-xl font-bold arabic-title text-emerald-800 mb-2">
-                        {section.title}
-                      </h2>
-                      <p className="text-emerald-600 arabic-text">
-                        {section.subtitle}
-                      </p>
-                    </div>
+                  {module.sections.map((section) => (
+                    <TabsContent key={section.id} value={section.id} className="space-y-6">
+                      <div className="text-center mb-6">
+                        <h2 className="text-xl font-bold arabic-title text-emerald-800 mb-2">
+                          {section.title}
+                        </h2>
+                        <p className="text-emerald-600 arabic-text">
+                          {section.subtitle}
+                        </p>
+                      </div>
 
-                    <div className="space-y-4">
-                      {section.content.map((item, index) => (
-                        <div key={index}>
-                          {item.type === "category" && (
-                            <Card className="border-emerald-200">
-                              <CardContent className="p-4">
-                                <h4 className="font-semibold arabic-text text-emerald-800 mb-3">
-                                  {item.title}
-                                </h4>
-                                <ul className="space-y-2">
-                                  {item.items.map((listItem, itemIndex) => (
-                                    <li key={itemIndex} className="flex items-center gap-2 arabic-text">
-                                      <span className="w-2 h-2 bg-emerald-500 rounded-full"></span>
-                                      {listItem}
-                                    </li>
-                                  ))}
-                                </ul>
-                              </CardContent>
-                            </Card>
-                          )}
+                      <div className="space-y-4">
+                        {section.content.map((item, index) => (
+                          <div key={index}>
+                            {renderContentItem(item, index)}
+                          </div>
+                        ))}
+                      </div>
 
-                          {item.type === "script" && (
-                            <Card className="border-emerald-200 bg-emerald-50">
-                              <CardContent className="p-4">
-                                <h4 className="font-semibold arabic-text text-emerald-800 mb-2">
-                                  {item.title}
-                                </h4>
-                                <div className="p-3 bg-white rounded-lg border-r-4 border-emerald-500">
-                                  <p className="arabic-text font-medium text-emerald-700">
-                                    "{item.text}"
-                                  </p>
-                                </div>
-                              </CardContent>
-                            </Card>
-                          )}
-
-                          {item.type === "technique" && (
-                            <Card className="border-emerald-200">
-                              <CardContent className="p-4">
-                                <div className="flex items-center gap-2 mb-3">
-                                  <span className="w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600 font-bold">
-                                    {index + 1}
-                                  </span>
-                                  <div>
-                                    <h4 className="font-semibold arabic-text text-emerald-800">
-                                      {item.title}
-                                    </h4>
-                                    <p className="text-sm text-emerald-600 arabic-text">
-                                      {item.description}
-                                    </p>
-                                  </div>
-                                </div>
-                                <div className="mr-10 space-y-2">
-                                  {item.steps.map((step, stepIndex) => (
-                                    <div key={stepIndex} className="flex items-center gap-2">
-                                      <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full"></span>
-                                      <span className="arabic-text text-sm">{step}</span>
-                                    </div>
-                                  ))}
-                                </div>
-                              </CardContent>
-                            </Card>
-                          )}
+                      {/* Practice Button */}
+                      {section.id === module.sections[module.sections.length - 1].id && (
+                        <div className="text-center pt-6 border-t border-emerald-200">
+                          <Button
+                            onClick={() => markModuleComplete(module.id)}
+                            disabled={completedModules.has(module.id)}
+                            className="btn-primary arabic-text px-8"
+                            data-testid="complete-module-button"
+                          >
+                            {completedModules.has(module.id) ? "تم الإكمال ✅" : "أكملت هذه المهارة (+3 نقاط)"}
+                          </Button>
+                          <p className="text-xs text-emerald-600 arabic-text mt-2">
+                            ستحصل على 3 نقاط عند إكمال هذه الوحدة
+                          </p>
                         </div>
-                      ))}
-                    </div>
-
-                    {/* Practice Button */}
-                    <div className="text-center pt-6 border-t border-emerald-200">
-                      <Button
-                        onClick={() => markModuleComplete("timeout")}
-                        disabled={completedModules.has("timeout")}
-                        className="btn-primary arabic-text px-8"
-                        data-testid="complete-module-button"
-                      >
-                        {completedModules.has("timeout") ? "تم الإكمال ✅" : "أكملت هذه المهارة (+3 نقاط)"}
-                      </Button>
-                      <p className="text-xs text-emerald-600 arabic-text mt-2">
-                        ستحصل على 3 نقاط عند إكمال هذه الوحدة
-                      </p>
-                    </div>
-                  </TabsContent>
-                ))}
-              </Tabs>
-            </CardContent>
-          </Card>
-        )}
+                      )}
+                    </TabsContent>
+                  ))}
+                </Tabs>
+              </CardContent>
+            </Card>
+          )
+        ))}
 
         {/* Implementation Homework */}
         <Card className="glass border-emerald-200">
