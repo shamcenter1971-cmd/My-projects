@@ -316,12 +316,12 @@ async def create_behavior_entry(behavior_data: BehaviorCreate, user_id: str):
                     is_read=False
                 )
                 
-                # 2. CRITICAL: Mandatory repair cycle notification for offender
+                # 2. CRITICAL: Mandatory repair cycle notification for offender WITH A-B-C CONTEXT
                 offender_notification = Notification(
                     user_id=partner_id,
                     type="negative_behavior_offender",
                     title="تنبيه سلوك سلبي! - إصلاح فوري مطلوب",
-                    message="تنبيه سلوك سلبي! تم تسجيل سلوك منتقد من شريكك. يجب إكمال دورة الإصلاح الفورية: (1) الإقرار بالملاحظة (2) إرسال 3 نقاط تعويض (3) إكمال وحدة تعليمية.",
+                    message=f"تنبيه سلوك سلبي! تم تسجيل سلوك منتقد من شريكك:\n\n🔸 الموقف: {behavior_data.antecedent}\n🔸 سلوكك: {behavior_data.behavior}\n🔸 التأثير: {behavior_data.consequence}\n\nيجب إكمال دورة الإصلاح الفورية: (1) الإقرار بالملاحظة (2) إرسال 3 نقاط تعويض (3) إكمال وحدة تعليمية.",
                     action_url="/repair-cycle",
                     priority_skills=["timeout", "self_soothing", "anger_management"],
                     behavior_id=behavior_obj.id,
