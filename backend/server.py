@@ -440,17 +440,18 @@ async def get_reinforcement_categories():
 
 @api_router.get("/reinforcement-templates")
 async def get_reinforcement_templates():
+    # Final expanded rewards list for Beta release
     templates = [
-        {"title": "خمس دقائق \"استماع بلا مقاطعة\"", "category": "attention", "cost": 5},
-        {"title": "النقاش دون تصعيد أو رفع للصوت", "category": "attention", "cost": 5},
-        {"title": "رسالة مودة مفاجئة (تعبر عن التقدير)", "category": "affection", "cost": 5},
-        {"title": "التعبير عن الإعجاب بشيء محدد (شخصية أو مظهر)", "category": "affection", "cost": 5},
-        {"title": "المبادرة بتحضير كوب قهوة/شاي لي عندما أكون متعباً", "category": "service", "cost": 5},
-        {"title": "القيام بمهمة منزلية نيابة عني دون طلب مسبق", "category": "service", "cost": 5},
-        {"title": "ساعتان من الراحة دون مسؤوليات أو طلبات أسرية", "category": "time", "cost": 10},
-        {"title": "الخروج في موعد زوجي خاص (Date) مرة هذا الشهر", "category": "time", "cost": 10},
-        {"title": "الثناء على مجهوداتي أمام الأهل أو الأصدقاء", "category": "recognition", "cost": 10},
-        {"title": "سؤال عن اهتماماتي أو أصدقائي والإنصات لذلك", "category": "recognition", "cost": 5}
+        {"title": "كلمة شكر محددة ومركزة", "category": "recognition", "cost": 5},
+        {"title": "عناق لمدة 30 ثانية", "category": "affection", "cost": 10},
+        {"title": "استلام مهمة صغيرة من واجبات الشريك", "category": "service", "cost": 15},
+        {"title": "اختيار الموسيقى أو قائمة التشغيل للمنزل", "category": "attention", "cost": 20},
+        {"title": "20 دقيقة انتباه كامل وغير مقسوم", "category": "attention", "cost": 25},
+        {"title": "شراء طعام جاهز بدلاً من الطبخ", "category": "service", "cost": 30},
+        {"title": "مساج مريح لمدة 20 دقيقة", "category": "affection", "cost": 35},
+        {"title": "هدية رمزية صغيرة (يتم شراؤها في أقرب فرصة)", "category": "recognition", "cost": 50},
+        {"title": "تجهيز عشاء فاخر في المنزل أو خارجه", "category": "time", "cost": 75},
+        {"title": "أمسية رومانسية مخطط لها بالكامل (Date Night)", "category": "time", "cost": 100}
     ]
     return {"templates": templates}
 
