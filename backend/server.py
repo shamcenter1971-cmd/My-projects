@@ -118,6 +118,23 @@ class Notification(BaseModel):
     is_read: bool = False
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
+class RepairCycle(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    behavior_id: str
+    offender_id: str
+    recipient_id: str
+    status: str  # "pending", "acknowledged", "payment_completed", "learning_completed", "completed"
+    offender_acknowledged: bool = False
+    compensation_paid: bool = False
+    offender_skill_completed: Optional[str] = None
+    recipient_skill_completed: Optional[str] = None
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    completed_at: Optional[datetime] = None
+
+class RepairAction(BaseModel):
+    action_type: str  # "acknowledge", "pay_compensation", "complete_skill"
+    skill_id: Optional[str] = None
+
 # Authentication helper functions
 def generate_pairing_code():
     return ''.join(secrets.choice('0123456789ABCDEF') for _ in range(8))
