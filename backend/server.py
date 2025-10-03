@@ -213,6 +213,17 @@ async def create_behavior_entry(behavior_data: BehaviorCreate, user_id: str):
         if user and user.get("partner_id"):
             partner_id = user["partner_id"]
             
+            # Initialize Immediate Repair Cycle
+            repair_cycle = RepairCycle(
+                behavior_id=behavior_obj.id,
+                offender_id=partner_id,  # Partner whose behavior was logged
+                recipient_id=user_id,    # User who logged the behavior
+                status="pending"
+            )
+            
+            prepared_repair = prepare_for_mongo(repair_cycle.dict())
+            await db.repair_cycles.insert_one(prepared_repair)
+            
             # Create notifications for both users with different messages
             notifications = []
             
@@ -230,14 +241,14 @@ async def create_behavior_entry(behavior_data: BehaviorCreate, user_id: str):
                 "created_at": datetime.now(timezone.utc).isoformat()
             }
             
-            # 2. Notification for the partner whose behavior was logged (offender)
+            # 2. CRITICAL: Mandatory repair cycle notification for offender
             offender_notification = {
                 "id": str(uuid.uuid4()),
                 "user_id": partner_id,
-                "type": "negative_behavior_offender", 
-                "title": "تنبيه سلوك سلبي!",
-                "message": "تنبيه سلوك سلبي! تم تسجيل سلوك منتقد من شريكك. للمساعدة في تحليل هذا السلوك وتجاوزه في المرات القادمة، انتقل إلى أدوات المساعدة وحل الخلافات.",
-                "action_url": "/help-tools", 
+                "type": "negative_behavior_offender",
+                "title": "تنبيه سلوك سلبي! - إصلاح فوري مطلوب",
+                "message": "تنبيه سلوك سلبي! تم تسجيل سلوك منتقد من شريكك. يجب إكمال دورة الإصلاح الفورية: (1) الإقرار بالملاحظة (2) إرسال 3 نقاط تعويض (3) إكمال وحدة تعليمية.",
+                "action_url": "/repair-cycle",
                 "priority_skills": ["timeout", "self_soothing", "anger_management"],
                 "behavior_id": behavior_obj.id,
                 "is_read": False,
