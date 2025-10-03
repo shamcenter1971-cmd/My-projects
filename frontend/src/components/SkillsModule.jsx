@@ -594,6 +594,26 @@ const SkillsModule = ({ user, partner, onBack }) => {
                     🎯 {module.goal}
                   </p>
                 )}
+                
+                {/* Module Progress */}
+                <div className="mt-4 p-3 bg-emerald-50 border border-emerald-200 rounded-lg">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm font-medium arabic-text text-emerald-800">
+                      تقدم الوحدة:
+                    </span>
+                    <span className="text-sm arabic-text text-emerald-600">
+                      {module.sections.filter(section => 
+                        sectionProgress[`${module.id}_${section.id}`]
+                      ).length} / {module.sections.length}
+                    </span>
+                  </div>
+                  <Progress 
+                    value={(module.sections.filter(section => 
+                      sectionProgress[`${module.id}_${section.id}`]
+                    ).length / module.sections.length) * 100} 
+                    className="h-2"
+                  />
+                </div>
               </CardHeader>
               <CardContent>
                 <Tabs defaultValue={module.sections[0].id} className="w-full">
