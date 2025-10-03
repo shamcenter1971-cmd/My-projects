@@ -21,7 +21,70 @@ const SkillsModule = ({ user, partner, onBack }) => {
   const [showCommitmentInput, setShowCommitmentInput] = useState(false);
   const [currentCommitmentSection, setCurrentCommitmentSection] = useState(null);
 
-  const markModuleComplete = async (moduleId) => {
+  useEffect(() => {
+    // Initialize first section as unlocked for each module
+    const initialUnlocked = {};
+    allModules.forEach(module => {
+      initialUnlocked[module.id] = { [module.sections[0].id]: true };
+    });
+    setUnlockedSections(initialUnlocked);
+  }, []);
+
+  const handleSectionInteraction = (moduleId, sectionId, interactionType) => {
+    const progressKey = `${moduleId}_${sectionId}`;
+    
+    // Mark section as interacted with
+    setSectionProgress(prev => ({
+      ...prev,
+      [progressKey]: true
+    }));
+
+    // Unlock next section
+    const module = allModules.find(m => m.id === moduleId);
+    const currentSectionIndex = module.sections.findIndex(s => s.id === sectionId);
+    const nextSection = module.sections[currentSectionIndex + 1];
+    
+    if (nextSection) {
+      setUnlockedSections(prev => ({
+        ...prev,
+        [moduleId]: {
+          ...prev[moduleId],
+          [nextSection.id]: true
+        }
+      }));
+    }
+
+    toast.success("تم إكمال هذا القسم! انتقل للقسم التالي");
+  };
+
+  const handleCommitmentPhrase = async (moduleId, sectionId, phrase) => {
+    try {
+      // Save commitment phrase to backend
+      await axios.post(`${API}/commitment-phrases`, {
+        user_id: user.id,
+        module_id: moduleId,
+        section_id: sectionId,
+        phrase: phrase,
+        display_on_dashboard: true
+      });
+
+      setCommitmentPhrases(prev => ({
+        ...prev,
+        [`${moduleId}_${sectionId}`]: phrase
+      }));
+
+      setShowCommitmentInput(false);
+      setCurrentCommitmentPhrase("");
+      
+      toast.success("تم حفظ عبارة الالتزام الشخصية! ستظهر في لوحة التحكم كتذكير فوري");
+      
+      // Mark this as interaction completed
+      handleSectionInteraction(moduleId, sectionId, 'commitment');
+      
+    } catch (error) {
+      toast.error("حدث خطأ أثناء حفظ عبارة الالتزام");
+    }
+  };
     try {
       // Award points for completing a module
       await axios.post(`${API}/points/award?user_id=${user.id}`, {
