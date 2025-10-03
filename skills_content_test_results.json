@@ -1,0 +1,203 @@
+{
+  "total_tests": 27,
+  "passed_tests": 26,
+  "failed_tests": 1,
+  "success_rate": 96.29629629629629,
+  "test_details": [
+    {
+      "test_name": "Skills Test User Setup",
+      "status": "✅ PASS",
+      "success": true,
+      "details": "Created paired users for skills testing",
+      "timestamp": "2025-10-03T01:01:59.866779"
+    },
+    {
+      "test_name": "Skills Points Award",
+      "status": "❌ FAIL",
+      "success": false,
+      "details": "Expected 3 points, got 0",
+      "timestamp": "2025-10-03T01:01:59.984056"
+    },
+    {
+      "test_name": "Time-Out Skill Arabic Phrases",
+      "status": "✅ PASS",
+      "success": true,
+      "details": "Verified 3 Arabic timeout phrases",
+      "timestamp": "2025-10-03T01:01:59.984089"
+    },
+    {
+      "test_name": "Time-Out Skill Physical Signs",
+      "status": "✅ PASS",
+      "success": true,
+      "details": "Verified 4 physical warning signs",
+      "timestamp": "2025-10-03T01:01:59.984094"
+    },
+    {
+      "test_name": "Time-Out Skill Behavioral Signs",
+      "status": "✅ PASS",
+      "success": true,
+      "details": "Verified 3 behavioral warning signs",
+      "timestamp": "2025-10-03T01:01:59.984097"
+    },
+    {
+      "test_name": "Active Listening Reflection Phrases",
+      "status": "✅ PASS",
+      "success": true,
+      "details": "Verified 3 Arabic reflection phrases",
+      "timestamp": "2025-10-03T01:01:59.984102"
+    },
+    {
+      "test_name": "Active Listening Techniques",
+      "status": "✅ PASS",
+      "success": true,
+      "details": "Verified 4 listening techniques",
+      "timestamp": "2025-10-03T01:01:59.984106"
+    },
+    {
+      "test_name": "Active Listening Arabic Title",
+      "status": "✅ PASS",
+      "success": true,
+      "details": "Verified Arabic title: كيف أجعل شريكي يشعر أنه مسموع؟",
+      "timestamp": "2025-10-03T01:01:59.984111"
+    },
+    {
+      "test_name": "Expressing Needs I-Statements",
+      "status": "✅ PASS",
+      "success": true,
+      "details": "Verified 2 Arabic I-statement examples",
+      "timestamp": "2025-10-03T01:01:59.984117"
+    },
+    {
+      "test_name": "Expressing Needs Specific Requests",
+      "status": "✅ PASS",
+      "success": true,
+      "details": "Verified 2 specific request examples",
+      "timestamp": "2025-10-03T01:01:59.984120"
+    },
+    {
+      "test_name": "Expressing Needs Rejection Handling",
+      "status": "✅ PASS",
+      "success": true,
+      "details": "Verified 2 rejection handling phrases",
+      "timestamp": "2025-10-03T01:01:59.984124"
+    },
+    {
+      "test_name": "Expressing Needs Arabic Title",
+      "status": "✅ PASS",
+      "success": true,
+      "details": "Verified Arabic title: كيف أطلب ما أريد دون لوم؟",
+      "timestamp": "2025-10-03T01:01:59.984127"
+    },
+    {
+      "test_name": "Time-Out and Self-Soothing Therapeutic Structure",
+      "status": "✅ PASS",
+      "success": true,
+      "details": "Verified therapeutic intervention structure for Time-Out and Self-Soothing",
+      "timestamp": "2025-10-03T01:01:59.984132"
+    },
+    {
+      "test_name": "Active Listening Therapeutic Structure",
+      "status": "✅ PASS",
+      "success": true,
+      "details": "Verified therapeutic intervention structure for Active Listening",
+      "timestamp": "2025-10-03T01:01:59.984136"
+    },
+    {
+      "test_name": "Expressing Needs Therapeutic Structure",
+      "status": "✅ PASS",
+      "success": true,
+      "details": "Verified therapeutic intervention structure for Expressing Needs",
+      "timestamp": "2025-10-03T01:01:59.984140"
+    },
+    {
+      "test_name": "Therapeutic Component: Recognition phase (العلامات الحمراء)",
+      "status": "✅ PASS",
+      "success": true,
+      "details": "Component properly implemented across all skills",
+      "timestamp": "2025-10-03T01:01:59.984143"
+    },
+    {
+      "test_name": "Therapeutic Component: Alternative behavior (السلوك البديل)",
+      "status": "✅ PASS",
+      "success": true,
+      "details": "Component properly implemented across all skills",
+      "timestamp": "2025-10-03T01:01:59.984147"
+    },
+    {
+      "test_name": "Therapeutic Component: Practice techniques (التقنيات العملية)",
+      "status": "✅ PASS",
+      "success": true,
+      "details": "Component properly implemented across all skills",
+      "timestamp": "2025-10-03T01:01:59.984150"
+    },
+    {
+      "test_name": "Therapeutic Component: Homework assignment (الواجب السلوكي)",
+      "status": "✅ PASS",
+      "success": true,
+      "details": "Component properly implemented across all skills",
+      "timestamp": "2025-10-03T01:01:59.984153"
+    },
+    {
+      "test_name": "Cultural Adaptation: Islamic greeting and respect phrases",
+      "status": "✅ PASS",
+      "success": true,
+      "details": "Verified cultural adaptation element",
+      "timestamp": "2025-10-03T01:01:59.984158"
+    },
+    {
+      "test_name": "Cultural Adaptation: Family-oriented relationship context",
+      "status": "✅ PASS",
+      "success": true,
+      "details": "Verified cultural adaptation element",
+      "timestamp": "2025-10-03T01:01:59.984163"
+    },
+    {
+      "test_name": "Cultural Adaptation: Arabic therapeutic terminology",
+      "status": "✅ PASS",
+      "success": true,
+      "details": "Verified cultural adaptation element",
+      "timestamp": "2025-10-03T01:01:59.984166"
+    },
+    {
+      "test_name": "Cultural Adaptation: Cultural sensitivity in conflict resolution",
+      "status": "✅ PASS",
+      "success": true,
+      "details": "Verified cultural adaptation element",
+      "timestamp": "2025-10-03T01:01:59.984169"
+    },
+    {
+      "test_name": "Arabic Therapeutic Term: الاستراحة والتهدئة الذاتية",
+      "status": "✅ PASS",
+      "success": true,
+      "details": "Verified proper Arabic therapeutic terminology",
+      "timestamp": "2025-10-03T01:01:59.984173"
+    },
+    {
+      "test_name": "Arabic Therapeutic Term: الاستماع النشط",
+      "status": "✅ PASS",
+      "success": true,
+      "details": "Verified proper Arabic therapeutic terminology",
+      "timestamp": "2025-10-03T01:01:59.984179"
+    },
+    {
+      "test_name": "Arabic Therapeutic Term: التعبير عن الحاجات",
+      "status": "✅ PASS",
+      "success": true,
+      "details": "Verified proper Arabic therapeutic terminology",
+      "timestamp": "2025-10-03T01:01:59.984182"
+    },
+    {
+      "test_name": "Arabic Therapeutic Term: دورة الإصلاح الفورية",
+      "status": "✅ PASS",
+      "success": true,
+      "details": "Verified proper Arabic therapeutic terminology",
+      "timestamp": "2025-10-03T01:01:59.984187"
+    }
+  ],
+  "skills_tested": [
+    "timeout",
+    "active_listening",
+    "expressing_needs"
+  ],
+  "test_users_created": 2
+}
