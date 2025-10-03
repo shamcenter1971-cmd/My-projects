@@ -518,53 +518,53 @@ const SkillsModule = ({ user, partner, onBack }) => {
         </div>
 
         {/* Skills Overview */}
-        <Card className="glass border-emerald-200 mb-8">
-          <CardHeader className="pb-4">
-            <CardTitle className="arabic-title text-emerald-800 text-2xl mb-3">
+        <Card className="glass border-emerald-200 mb-6 sm:mb-8 w-full">
+          <CardHeader className="pb-4 px-3 sm:px-6">
+            <CardTitle className="arabic-title text-emerald-800 text-xl sm:text-2xl mb-3 text-center">
               الأدوات المتاحة
             </CardTitle>
-            <CardDescription className="arabic-text text-base leading-relaxed">
+            <CardDescription className="arabic-text text-sm sm:text-base leading-relaxed text-center px-1">
               وحدات تعليمية قصيرة (10-15 دقيقة) لتطوير مهارات التواصل الإيجابي وحل الخلافات
             </CardDescription>
           </CardHeader>
-          <CardContent className="pt-4">
-            <div className="grid gap-6">
+          <CardContent className="pt-4 px-3 sm:px-6">
+            <div className="grid gap-4 sm:gap-6 w-full">
               {allModules.map((module) => (
                 <div 
                   key={module.id}
-                  className={`skill-section cursor-pointer transition-all ${
+                  className={`skill-section cursor-pointer transition-all w-full ${
                     activeModule === module.id ? "border-emerald-400 bg-emerald-50 shadow-md" : "border-emerald-200 hover:bg-emerald-50"
                   }`}
                   onClick={() => setActiveModule(module.id)}
                   data-testid={`${module.id}-skill-card`}
                 >
-                  <div className="flex justify-between items-start gap-4">
-                    <div className="flex-1">
-                      <h3 className="text-xl font-semibold arabic-title text-emerald-800 mb-3">
+                  <div className="flex flex-col sm:flex-row justify-between items-start gap-3 sm:gap-4 w-full">
+                    <div className="flex-1 w-full">
+                      <h3 className="text-lg sm:text-xl font-semibold arabic-title text-emerald-800 mb-2 sm:mb-3 text-center sm:text-right">
                         {module.title}
                       </h3>
-                      <p className="text-emerald-600 arabic-text mb-3 leading-relaxed">
+                      <p className="text-emerald-600 arabic-text mb-2 sm:mb-3 leading-relaxed text-center sm:text-right text-sm sm:text-base">
                         {module.description}
                       </p>
                       {module.goal && (
-                        <p className="text-sm text-emerald-500 arabic-text mb-4 font-medium leading-relaxed">
+                        <p className="text-xs sm:text-sm text-emerald-500 arabic-text mb-3 sm:mb-4 font-medium leading-relaxed text-center sm:text-right">
                           🎯 الهدف: {module.goal}
                         </p>
                       )}
-                      <div className="flex flex-wrap items-center gap-3">
-                        <Badge variant="secondary" className="arabic-text px-3 py-1">
+                      <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 sm:gap-3">
+                        <Badge variant="secondary" className="arabic-text px-2 sm:px-3 py-1 text-xs">
                           {module.duration}
                         </Badge>
-                        <Badge variant="secondary" className="arabic-text px-3 py-1">
+                        <Badge variant="secondary" className="arabic-text px-2 sm:px-3 py-1 text-xs">
                           {module.sections.length} أقسام
                         </Badge>
                       </div>
                     </div>
-                    <div className="flex-shrink-0">
+                    <div className="flex-shrink-0 w-full sm:w-auto text-center">
                       {completedModules.has(module.id) && (
-                        <div className="flex items-center gap-2 text-emerald-600">
-                          <span className="text-2xl">✅</span>
-                          <span className="text-sm arabic-text font-medium">مكتمل</span>
+                        <div className="flex items-center justify-center gap-2 text-emerald-600">
+                          <span className="text-xl sm:text-2xl">✅</span>
+                          <span className="text-xs sm:text-sm arabic-text font-medium">مكتمل</span>
                         </div>
                       )}
                     </div>
