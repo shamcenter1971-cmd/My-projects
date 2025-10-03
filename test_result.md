@@ -107,15 +107,18 @@ user_problem_statement: "FINAL GO-AHEAD: Implement A-B-C Context, Expanded Rewar
 backend:
   - task: "A-B-C Context Injection - Repair Cycle Notifications"
     implemented: true
-    working: true
+    working: "NA"
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
         - working: true
           agent: "main"
           comment: "A-B-C context is already being injected in notification message (lines 320-329). Need to verify full implementation works properly."
+        - working: "NA"
+          agent: "main"
+          comment: "ENHANCED: Added specific behavior by ID endpoint for better A-B-C context fetching. Updated RepairCycle component to use new endpoint with fallback."
 
   - task: "Expanded Positive Rewards System Backend"
     implemented: true
