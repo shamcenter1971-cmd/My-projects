@@ -495,23 +495,23 @@ const SkillsModule = ({ user, partner, onBack }) => {
   const allModules = [timeoutModule, activeListeningModule, expressingNeedsModule];
 
   return (
-    <div className="min-h-screen p-4 space-y-6">
-      <div className="max-w-6xl mx-auto px-4">
+    <div className="min-h-screen p-2 sm:p-4 space-y-6">
+      <div className="max-w-6xl mx-auto px-2 sm:px-4 skills-module-container">
         {/* Header */}
-        <div className="dashboard-header mb-8">
+        <div className="dashboard-header mb-6 sm:mb-8">
           <Button 
             onClick={onBack}
             variant="outline"
-            className="arabic-text mb-4 md:mb-0"
+            className="arabic-text mb-4 md:mb-0 w-full sm:w-auto"
             data-testid="back-button"
           >
             ← العودة
           </Button>
-          <div className="text-center md:text-right">
-            <h1 className="text-3xl font-bold arabic-title text-emerald-800 mb-3">
+          <div className="text-center md:text-right w-full">
+            <h1 className="text-2xl sm:text-3xl font-bold arabic-title text-emerald-800 mb-3 skills-module-title">
               أدوات المساعدة وحل الخلافات
             </h1>
-            <p className="text-emerald-600 arabic-text text-lg leading-relaxed">
+            <p className="text-emerald-600 arabic-text text-base sm:text-lg leading-relaxed px-2">
               تعلم المهارات البديلة للسلوكيات السلبية المسجلة في محلل السلوك
             </p>
           </div>
