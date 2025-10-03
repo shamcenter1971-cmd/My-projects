@@ -87,10 +87,10 @@ const Dashboard = ({ user, partner, onLogout, onRefresh }) => {
                   <div className="relative">
                     <Button 
                       variant="outline" 
-                      className="arabic-text relative px-4 py-2"
+                      className="arabic-text relative px-6 py-2 min-w-0"
                       data-testid="notifications-button"
                     >
-                      📢 التنبيهات
+                      📢 التنبيهات والإجراءات الملزمة
                     </Button>
                     {unreadCount > 0 && (
                       <div className="notification-badge">
