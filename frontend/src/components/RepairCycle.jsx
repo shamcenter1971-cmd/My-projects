@@ -130,9 +130,11 @@ const RepairCycle = ({ user, partner, onBack, onComplete }) => {
   const repairSteps = [
     {
       id: "acknowledge",
-      title: "الإقرار بالملاحظة",
-      description: "أقر بأن شريكي لاحظ سلوكاً سلبياً مني",
-      action: "أقر بالملاحظة وبدأت الإصلاح",
+      title: "الإقرار بالملاحظة والسلوك",
+      description: behaviorContext 
+        ? `أقر بأن سلوكي "${behaviorContext.behavior}" أثر سلبياً على شريكي`
+        : "أقر بأن شريكي لاحظ سلوكاً سلبياً مني",
+      action: "أقر بالملاحظة وأتحمل المسؤولية",
       completed: activeRepairCycle.offender_acknowledged
     },
     {
