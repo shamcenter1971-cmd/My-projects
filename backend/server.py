@@ -224,40 +224,36 @@ async def create_behavior_entry(behavior_data: BehaviorCreate, user_id: str):
             prepared_repair = prepare_for_mongo(repair_cycle.dict())
             await db.repair_cycles.insert_one(prepared_repair)
             
-            # Create notifications for both users with different messages
-            notifications = []
-            
             # 1. Notification for the user who submitted the log (recipient of negative behavior)
-            recipient_notification = {
-                "id": str(uuid.uuid4()),
-                "user_id": user_id,
-                "type": "negative_behavior_recipient",
-                "title": "تم تسجيل سلوك أثّر عليك",
-                "message": "تم تسجيل سلوك أثّر عليك. انتقل الآن إلى أدوات المساعدة وحل الخلافات لمعرفة مهارات مواجهة هذا السلوك والحفاظ على حدودك العاطفية.",
-                "action_url": "/help-tools",
-                "priority_skills": ["active_listening", "expressing_needs", "boundary_setting"],
-                "behavior_id": behavior_obj.id,
-                "is_read": False,
-                "created_at": datetime.now(timezone.utc).isoformat()
-            }
+            recipient_notification = Notification(
+                user_id=user_id,
+                type="negative_behavior_recipient",
+                title="تم تسجيل سلوك أثّر عليك",
+                message="تم تسجيل سلوك أثّر عليك. انتقل الآن إلى أدوات المساعدة وحل الخلافات لمعرفة مهارات مواجهة هذا السلوك والحفاظ على حدودك العاطفية.",
+                action_url="/help-tools",
+                priority_skills=["active_listening", "expressing_needs", "boundary_setting"],
+                behavior_id=behavior_obj.id,
+                is_read=False
+            )
             
             # 2. CRITICAL: Mandatory repair cycle notification for offender
-            offender_notification = {
-                "id": str(uuid.uuid4()),
-                "user_id": partner_id,
-                "type": "negative_behavior_offender",
-                "title": "تنبيه سلوك سلبي! - إصلاح فوري مطلوب",
-                "message": "تنبيه سلوك سلبي! تم تسجيل سلوك منتقد من شريكك. يجب إكمال دورة الإصلاح الفورية: (1) الإقرار بالملاحظة (2) إرسال 3 نقاط تعويض (3) إكمال وحدة تعليمية.",
-                "action_url": "/repair-cycle",
-                "priority_skills": ["timeout", "self_soothing", "anger_management"],
-                "behavior_id": behavior_obj.id,
-                "is_read": False,
-                "created_at": datetime.now(timezone.utc).isoformat()
-            }
+            offender_notification = Notification(
+                user_id=partner_id,
+                type="negative_behavior_offender",
+                title="تنبيه سلوك سلبي! - إصلاح فوري مطلوب",
+                message="تنبيه سلوك سلبي! تم تسجيل سلوك منتقد من شريكك. يجب إكمال دورة الإصلاح الفورية: (1) الإقرار بالملاحظة (2) إرسال 3 نقاط تعويض (3) إكمال وحدة تعليمية.",
+                action_url="/repair-cycle",
+                priority_skills=["timeout", "self_soothing", "anger_management"],
+                behavior_id=behavior_obj.id,
+                is_read=False
+            )
             
-            # Store notifications in database
-            await db.notifications.insert_one(recipient_notification)
-            await db.notifications.insert_one(offender_notification)
+            # Store notifications in database using proper models
+            recipient_prepared = prepare_for_mongo(recipient_notification.dict())
+            offender_prepared = prepare_for_mongo(offender_notification.dict())
+            
+            await db.notifications.insert_one(recipient_prepared)
+            await db.notifications.insert_one(offender_prepared)
     
     return behavior_obj
 
