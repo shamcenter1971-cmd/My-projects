@@ -1,0 +1,81 @@
+{
+  "total_tests": 10,
+  "passed_tests": 10,
+  "failed_tests": 0,
+  "success_rate": 100.0,
+  "test_details": [
+    {
+      "test_name": "Test Users Setup",
+      "status": "✅ PASS",
+      "success": true,
+      "details": "Created and paired users: أحمد الإصلاح 010101 & فاطمة المتضررة 010101",
+      "timestamp": "2025-10-03T01:01:02.037731"
+    },
+    {
+      "test_name": "Negative Behavior Creation",
+      "status": "✅ PASS",
+      "success": true,
+      "details": "Created negative behavior entry: f77a41c2-2d7c-4fb2-ae0d-678b6267dbac",
+      "timestamp": "2025-10-03T01:01:02.080124"
+    },
+    {
+      "test_name": "Automatic Repair Cycle Creation",
+      "status": "✅ PASS",
+      "success": true,
+      "details": "Repair cycle automatically created: 851ab3da-75a2-430d-856e-09d90e7f1e2d",
+      "timestamp": "2025-10-03T01:01:02.117968"
+    },
+    {
+      "test_name": "Offender Repair Notification",
+      "status": "✅ PASS",
+      "success": true,
+      "details": "Found repair cycle notification: تنبيه سلوك سلبي! - إصلاح فوري مطلوب",
+      "timestamp": "2025-10-03T01:01:02.162174"
+    },
+    {
+      "test_name": "Recipient Help Notification",
+      "status": "✅ PASS",
+      "success": true,
+      "details": "Found help tools notification: تم تسجيل سلوك أثّر عليك",
+      "timestamp": "2025-10-03T01:01:02.203195"
+    },
+    {
+      "test_name": "Repair Step 1 - Acknowledge",
+      "status": "✅ PASS",
+      "success": true,
+      "details": "Acknowledgment successful: Acknowledgment recorded",
+      "timestamp": "2025-10-03T01:01:02.598003"
+    },
+    {
+      "test_name": "Repair Step 2 - Compensation",
+      "status": "✅ PASS",
+      "success": true,
+      "details": "3 points successfully transferred from offender to recipient",
+      "timestamp": "2025-10-03T01:01:02.838874"
+    },
+    {
+      "test_name": "Repair Step 3 - Skill Completion",
+      "status": "✅ PASS",
+      "success": true,
+      "details": "Repair cycle completed successfully",
+      "timestamp": "2025-10-03T01:01:02.924541"
+    },
+    {
+      "test_name": "Repair Cycle History",
+      "status": "✅ PASS",
+      "success": true,
+      "details": "Retrieved 1 repair cycles",
+      "timestamp": "2025-10-03T01:01:02.965237"
+    },
+    {
+      "test_name": "Recipient Confirmation",
+      "status": "✅ PASS",
+      "success": true,
+      "details": "Found repair confirmation notification",
+      "timestamp": "2025-10-03T01:01:03.002899"
+    }
+  ],
+  "repair_cycle_id": "851ab3da-75a2-430d-856e-09d90e7f1e2d",
+  "behavior_id": "f77a41c2-2d7c-4fb2-ae0d-678b6267dbac",
+  "test_users_created": 2
+}
