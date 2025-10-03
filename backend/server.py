@@ -190,9 +190,21 @@ class RepairCycle(BaseModel):
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     completed_at: Optional[datetime] = None
 
-class RepairAction(BaseModel):
-    action_type: str  # "acknowledge", "pay_compensation", "complete_skill"
-    skill_id: Optional[str] = None
+class CommitmentPhrase(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    user_id: str
+    module_id: str
+    section_id: str
+    phrase: str
+    display_on_dashboard: bool = True
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+class CommitmentPhraseCreate(BaseModel):
+    user_id: str
+    module_id: str
+    section_id: str
+    phrase: str
+    display_on_dashboard: bool = True
 
 # Authentication helper functions
 def generate_pairing_code():
